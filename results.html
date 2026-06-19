@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Results - Sahityotsav</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple-600: #534AB7;
+  --purple-100: #EEEDFE;
+  --purple-800: #3C3489;
+  --green-100: #E1F5EE;
+  --green-800: #085041;
+  --bg: #F8F7FC;
+  --card-bg: #FFFFFF;
+  --text-primary: #1A1A2E;
+  --text-secondary: #6B7280;
+  --border: #E5E7EB;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100dvh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 2rem;
+}
+
+/* Back button */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 8px 0;
+  margin-bottom: 1rem;
+  -webkit-tap-highlight-color: transparent;
+}
+.back-btn:active { color: var(--purple-600); }
+
+/* Page header */
+.page-header {
+  margin-bottom: 1.5rem;
+}
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.page-desc {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Dropdown */
+.select-wrapper {
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+.select-wrapper select {
+  width: 100%;
+  padding: 14px 44px 14px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.select-wrapper select:focus {
+  outline: none;
+  border-color: var(--purple-600);
+  box-shadow: 0 0 0 3px rgba(83, 74, 183, 0.1);
+}
+.select-arrow {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--text-secondary);
+}
+
+/* Program list */
+.program-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.program-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.program-item:active {
+  border-color: var(--purple-600);
+  box-shadow: var(--shadow-md);
+}
+.program-item-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.program-item-arrow {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+.program-placeholder {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
+.program-placeholder svg {
+  display: block;
+  margin: 0 auto 12px;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.modal-overlay.open {
+  display: flex;
+}
+.modal {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 360px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  animation: modalIn 0.25s ease;
+}
+@keyframes modalIn {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.modal-poster {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  background: #F3F4F6;
+}
+.modal-body {
+  padding: 18px 20px 20px;
+}
+.modal-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.modal-category {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+.modal-download {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--purple-600);
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.modal-download:active {
+  background: var(--purple-800);
+}
+.modal-close {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+.modal-close:active {
+  background: #F3F4F6;
+}
+
+/* Not published state */
+.modal-not-published {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+}
+.modal-not-published svg {
+  display: block;
+  margin: 0 auto 14px;
+}
+.modal-not-published h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.modal-not-published p {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+  .page { max-width: 600px; padding: 2rem; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <a href="index.html" class="back-btn">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Schedule
+  </a>
+
+  <div class="page-header">
+    <h1 class="page-title">Results</h1>
+    <p class="page-desc">Select a category below to view results for each program. Download result posters when available.</p>
+  </div>
+
+  <div class="select-wrapper">
+    <select id="category-select" onchange="onCategoryChange(this.value)">
+      <option value="">Select Category</option>
+      <option value="LP">LP - Lower Primary</option>
+      <option value="UP">UP - Upper Primary</option>
+      <option value="HS">HS - High School</option>
+      <option value="HSS">HSS - Higher Secondary</option>
+      <option value="Junior">Junior</option>
+      <option value="Senior">Senior</option>
+      <option value="General">General</option>
+    </select>
+    <div class="select-arrow">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </div>
+
+  <div id="program-list" class="program-list">
+    <div class="program-placeholder">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Select a category to see programs
+    </div>
+  </div>
+</div>
+
+<!-- Result Modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="result-modal" onclick="event.stopPropagation()">
+  </div>
+</div>
+
+<script>
+var categoryItems = {
+  LP: ['Madh Ganam', 'Katha Kathanam', 'Quiz', 'Pencil Drawing', 'Jalachayam', 'Prasangam Malayalam', 'Vayana Arabi Mal', 'Vayana Mal', 'Bhasha Keli', 'Book Test'],
+  UP: ['Katha Kathanam', 'Mappilappattu', 'Ghanithakeli', 'Quiz', 'Pencil Drawing', 'Jalachayam', 'Katharachana', 'Spelling Bee', 'Sudoku', 'Prasangam Malayalam', 'Book Test'],
+  HS: ['Madhganam', 'Kavitha Parayanam Malayalam', 'Quiz', 'Katha Rachana', 'Kavitha Rachana', 'Essay Malayalam', 'Caption Writing', 'Language Game', 'Pencil Drawing', 'Water Colour', 'Mappilappattu', 'Arabi Padyam', 'Prasangam English', 'Prasangam Malayalam', 'News Reading', 'Urdu Kavitha Parayanam', 'Book Test'],
+  HSS: ['Urdu Kavitha Parayanam', 'Bhakthiganam', 'Quiz', 'Katha Rachana', 'Kavitha Rachana', 'Essay Malayalam', 'Essay English', 'Pencil Drawing', 'Water Colour', 'News Writing', 'Arabic Calligraphy', 'Digital Painting', 'Mappilappattu', 'Prasangam Malayalam', 'Book Test'],
+  Junior: ['Arabi Prasangam', 'Quiz', 'Social Text', 'Calligraphy', 'Kavitha Rachana', 'Katha Rachana', 'Essay Malayalam', 'Essay Arabi', 'Mudravakya Rachana', 'Madhgana Rachana', 'Translation Arabi', 'AI Kavitha Rachana', 'Prasangam Malayalam', 'Prasangam English', 'Mappilappattu', 'Book Test'],
+  Senior: ['Mappilappattu', 'Quiz', 'Social Text', 'E Poster', 'Poster Designing', 'Katha Rachana', 'Kavitha Rachana', 'Kavitha Rachana English', 'Essay Malayalam', 'Essay English', 'Essay Urdu', 'Translation English', 'Madhgana Rachana', 'Mudravakya Rachana', 'Feature Writing', 'Digital Painting', 'Digital Illustration', 'Prasangam Malayalam', 'Prasangam English', 'Hamd Urdu', "Musha'ra Alfiya", 'Kavitha Parayanam English', 'Book Test'],
+  General: ['Viplava Ganam', 'Qawali', 'Mappilappattu', 'Risala Quiz', 'Qaseeda', 'Nasheeda', 'Group Song', 'Moulid Parayanam', 'Collage']
+};
+
+var REPO = 'saadchadu/ssfchakkarakal';
+var FOLDER = 'results';
+var API_BASE = 'https://api.github.com/repos/' + REPO + '/contents/' + FOLDER + '/';
+var RAW_BASE = 'https://raw.githubusercontent.com/' + REPO + '/master/' + FOLDER + '/';
+var cache = {};
+var currentCategory = '';
+
+function toKey(str) {
+  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+}
+
+function fetchResults(category, callback) {
+  if (cache[category]) { callback(cache[category]); return; }
+
+  fetch(API_BASE + encodeURIComponent(category))
+    .then(function(res) {
+      if (!res.ok) throw new Error('empty');
+      return res.json();
+    })
+    .then(function(files) {
+      var results = {};
+      files.forEach(function(f) {
+        if (/\.(png|jpg|jpeg|webp)$/i.test(f.name)) {
+          results[toKey(f.name.replace(/\.(png|jpg|jpeg|webp)$/i, ''))] = f.name;
+        }
+      });
+      cache[category] = results;
+      callback(results);
+    })
+    .catch(function() {
+      cache[category] = {};
+      callback({});
+    });
+}
+
+function onCategoryChange(category) {
+  currentCategory = category;
+  var list = document.getElementById('program-list');
+
+  if (!category) {
+    list.innerHTML = '<div class="program-placeholder"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Select a category to see programs</div>';
+    return;
+  }
+
+  var items = categoryItems[category] || [];
+  var html = '';
+  items.forEach(function(item) {
+    html += '<div class="program-item" onclick="openResult(\'' + category + '\', \'' + item.replace(/'/g, "\\'") + '\')">';
+    html += '<span class="program-item-name">' + item + '</span>';
+    html += '<span class="program-item-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+}
+
+function openResult(category, item) {
+  var modal = document.getElementById('result-modal');
+  var overlay = document.getElementById('modal-overlay');
+
+  modal.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-secondary);font-size:0.8125rem;">Loading...</div>';
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  fetchResults(category, function(results) {
+    var fileKey = toKey(item);
+    var fileName = results[fileKey];
+
+    if (fileName) {
+      var rawUrl = RAW_BASE + encodeURIComponent(category) + '/' + encodeURIComponent(fileName);
+      modal.innerHTML =
+        '<img class="modal-poster" src="' + rawUrl + '" alt="' + item + ' Result">' +
+        '<div class="modal-body">' +
+          '<div class="modal-title">' + item + '</div>' +
+          '<div class="modal-category">' + category + '</div>' +
+          '<a href="' + rawUrl + '" download="' + fileName + '" class="modal-download">' +
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
+            'Download Poster' +
+          '</a>' +
+          '<button class="modal-close" onclick="closeModal()">Close</button>' +
+        '</div>';
+    } else {
+      modal.innerHTML =
+        '<div class="modal-not-published">' +
+          '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
+          '<h3>' + item + '</h3>' +
+          '<p>Result for this program has not been published yet. Please check back later.</p>' +
+        '</div>' +
+        '<div style="padding:0 20px 20px;"><button class="modal-close" onclick="closeModal()" style="background:#F3F4F6;">Close</button></div>';
+    }
+  });
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modal-overlay')) return;
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+</script>
+</body>
+</html>

@@ -248,224 +248,54 @@ body {
   font-weight: 450;
 }
 
-/* Results Section */
-.results-section {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-.results-open-btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 16px 18px;
-  background: var(--card-bg);
+/* Results Hero */
+.results-hero {
+  margin-bottom: 1.25rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #534AB7, #7C6FDB);
   border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  transition: box-shadow 0.2s;
-}
-.results-open-btn:active {
-  box-shadow: var(--shadow-md);
-}
-.results-open-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.results-open-left svg {
-  color: var(--purple-600);
-  flex-shrink: 0;
-}
-.results-open-left div {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-}
-.results-open-title {
-  font-size: 0.9375rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-.results-open-sub {
-  font-size: 0.6875rem;
-  color: var(--text-secondary);
-  font-weight: 450;
-}
-.results-open-btn > svg {
-  color: var(--text-secondary);
-}
-
-/* Bottom Sheet */
-.sheet-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  z-index: 999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  -webkit-backdrop-filter: blur(2px);
-  backdrop-filter: blur(2px);
-}
-.sheet-overlay.open {
-  opacity: 1;
-  pointer-events: auto;
-}
-.sheet {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background: var(--bg);
-  border-radius: 20px 20px 0 0;
-  max-height: 85dvh;
-  transform: translateY(100%);
-  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
-}
-.sheet.open {
-  transform: translateY(0);
-}
-.sheet-handle {
-  padding: 12px 0 8px;
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-.sheet-bar {
-  width: 36px;
-  height: 4px;
-  border-radius: 4px;
-  background: #D1D5DB;
-}
-.sheet-content {
-  padding: 0 1.25rem 2rem;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  flex: 1;
-}
-.sheet-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 14px;
-}
-.sheet-categories {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 16px;
-  position: sticky;
-  top: 0;
-  background: var(--bg);
-  padding: 4px 0 12px;
-  z-index: 1;
-}
-.cat-chip {
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  background: var(--card-bg);
-  color: var(--text-secondary);
-  transition: all 0.2s ease;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-.cat-chip.active {
-  background: var(--purple-600);
-  color: #fff;
-  border-color: var(--purple-600);
-  box-shadow: 0 2px 8px rgba(83, 74, 183, 0.25);
-}
-.cat-chip:active:not(.active) {
-  background: var(--purple-100);
-}
-.sheet-results {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.result-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 16px;
-  background: var(--card-bg);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-}
-.result-item-info {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  flex: 1;
-  min-width: 0;
-}
-.result-item-name {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-.result-item-status {
-  font-size: 0.6875rem;
-  font-weight: 500;
-}
-.result-item-status.published {
-  color: var(--green-800);
-}
-.result-item-status.pending {
-  color: var(--text-secondary);
-}
-.result-download-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: var(--purple-100);
-  color: var(--purple-800);
-  text-decoration: none;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  flex-shrink: 0;
-  transition: background 0.2s;
-}
-.result-download-btn:active {
-  background: var(--purple-600);
-  color: #fff;
-}
-.result-pending-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #F3F4F6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.results-loading {
   text-align: center;
-  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(83, 74, 183, 0.25);
+}
+.results-hero-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+.results-hero-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.results-hero-desc {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+.results-hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  background: #fff;
+  color: var(--purple-800);
   font-size: 0.8125rem;
-  color: var(--text-secondary);
-  background: var(--card-bg);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
+  font-weight: 700;
+  border-radius: 24px;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.results-hero-btn:active {
+  transform: scale(0.96);
 }
 
 /* Instagram Section */
@@ -534,6 +364,9 @@ body {
 /* Tablet and up */
 @media (min-width: 768px) {
   .page { max-width: 900px; padding: 2rem; }
+  .festival-header { padding: 2rem 0 1.75rem; }
+  .festival-logo { max-width: 320px; }
+  .festival-sub { font-size: 0.9375rem; margin-top: 10px; letter-spacing: 0.2em; }
   .stage-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -545,6 +378,9 @@ body {
 }
 @media (min-width: 1024px) {
   .page { max-width: 1100px; }
+  .festival-header { padding: 2.5rem 0 2rem; }
+  .festival-logo { max-width: 400px; }
+  .festival-sub { font-size: 1.0625rem; margin-top: 12px; letter-spacing: 0.25em; }
   .stage-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -561,40 +397,18 @@ body {
     <p class="festival-sub">Program Schedule</p>
   </header>
 
-  <!-- Results Section -->
-  <section class="results-section">
-    <button class="results-open-btn" onclick="openResults()">
-      <div class="results-open-left">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        <div>
-          <span class="results-open-title">Results</span>
-          <span class="results-open-sub">View results by category</span>
-        </div>
-      </div>
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-    </button>
-  </section>
-
-  <!-- Results Bottom Sheet -->
-  <div class="sheet-overlay" id="sheet-overlay" onclick="closeResults()"></div>
-  <div class="sheet" id="results-sheet">
-    <div class="sheet-handle" onclick="closeResults()"><div class="sheet-bar"></div></div>
-    <div class="sheet-content">
-      <h2 class="sheet-title">Results</h2>
-      <div class="sheet-categories" id="sheet-categories">
-        <button class="cat-chip active" onclick="selectCategory('LP', this)">LP</button>
-        <button class="cat-chip" onclick="selectCategory('UP', this)">UP</button>
-        <button class="cat-chip" onclick="selectCategory('HS', this)">HS</button>
-        <button class="cat-chip" onclick="selectCategory('HSS', this)">HSS</button>
-        <button class="cat-chip" onclick="selectCategory('Junior', this)">Junior</button>
-        <button class="cat-chip" onclick="selectCategory('Senior', this)">Senior</button>
-        <button class="cat-chip" onclick="selectCategory('General', this)">General</button>
-      </div>
-      <div class="sheet-results" id="results-list">
-        <div class="results-loading">Select a category to view results</div>
-      </div>
+  <!-- Results Hero -->
+  <section class="results-hero">
+    <div class="results-hero-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
     </div>
-  </div>
+    <h2 class="results-hero-title">Results Published</h2>
+    <p class="results-hero-desc">Check results for all categories and download result posters.</p>
+    <a href="results.html" class="results-hero-btn">
+      Check Result
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </a>
+  </section>
 
   <nav class="day-tabs" role="tablist">
     <button class="day-tab active" role="tab" aria-selected="true" onclick="switchDay('sat', this)">Saturday</button>
@@ -615,7 +429,7 @@ body {
           <div class="item"><span class="item-badge badge-lp">LP</span><span class="item-name">Madh Ganam</span></div>
           <div class="item"><span class="item-badge badge-up">UP</span><span class="item-name">Mappilappattu</span></div>
           <div class="item"><span class="item-badge badge-gen">Gen</span><span class="item-name">Viplava Ganam</span></div>
-          <div style="padding: 8px 0;"><span class="inaug-pill">&#9733; Inauguration (after Magrib)</span></div>
+          <div style="padding: 8px 0;"><span class="inaug-pill">&#9733; Inauguration (After Magrib)</span></div>
           <div class="item"><span class="item-badge badge-g">G</span><span class="item-name">Qawali</span></div>
         </div>
       </div>
@@ -873,126 +687,6 @@ function switchDay(day, btn) {
   btn.classList.add('active');
   btn.setAttribute('aria-selected', 'true');
 }
-
-// Bottom sheet controls
-function openResults() {
-  document.getElementById('sheet-overlay').classList.add('open');
-  document.getElementById('results-sheet').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  // Auto-select first category
-  var firstChip = document.querySelector('.cat-chip.active');
-  if (firstChip) selectCategory(firstChip.textContent, firstChip);
-}
-
-function closeResults() {
-  document.getElementById('sheet-overlay').classList.remove('open');
-  document.getElementById('results-sheet').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-// Category items data
-var categoryItems = {
-  LP: ['Madh Ganam', 'Katha Kathanam', 'Quiz', 'Pencil Drawing', 'Jalachayam', 'Prasangam Malayalam', 'Vayana Arabi Mal', 'Vayana Mal', 'Bhasha Keli', 'Book Test'],
-  UP: ['Katha Kathanam', 'Mappilappattu', 'Ghanithakeli', 'Quiz', 'Pencil Drawing', 'Jalachayam', 'Katharachana', 'Spelling Bee', 'Sudoku', 'Prasangam Malayalam', 'Book Test'],
-  HS: ['Madhganam', 'Kavitha Parayanam Malayalam', 'Quiz', 'Katha Rachana', 'Kavitha Rachana', 'Essay Malayalam', 'Caption Writing', 'Language Game', 'Pencil Drawing', 'Water Colour', 'Mappilappattu', 'Arabi Padyam', 'Prasangam English', 'Prasangam Malayalam', 'News Reading', 'Urdu Kavitha Parayanam', 'Book Test'],
-  HSS: ['Urdu Kavitha Parayanam', 'Bhakthiganam', 'Quiz', 'Katha Rachana', 'Kavitha Rachana', 'Essay Malayalam', 'Essay English', 'Pencil Drawing', 'Water Colour', 'News Writing', 'Arabic Calligraphy', 'Digital Painting', 'Mappilappattu', 'Prasangam Malayalam', 'Book Test'],
-  Junior: ['Arabi Prasangam', 'Quiz', 'Social Text', 'Calligraphy', 'Kavitha Rachana', 'Katha Rachana', 'Essay Malayalam', 'Essay Arabi', 'Mudravakya Rachana', 'Madhgana Rachana', 'Translation Arabi', 'AI Kavitha Rachana', 'Prasangam Malayalam', 'Prasangam English', 'Mappilappattu', 'Book Test'],
-  Senior: ['Mappilappattu', 'Quiz', 'Social Text', 'E Poster', 'Poster Designing', 'Katha Rachana', 'Kavitha Rachana', 'Kavitha Rachana English', 'Essay Malayalam', 'Essay English', 'Essay Urdu', 'Translation English', 'Madhgana Rachana', 'Mudravakya Rachana', 'Feature Writing', 'Digital Painting', 'Digital Illustration', 'Prasangam Malayalam', 'Prasangam English', 'Hamd Urdu', "Musha'ra Alfiya", 'Kavitha Parayanam English', 'Book Test'],
-  General: ['Viplava Ganam', 'Qawali', 'Mappilappattu', 'Risala Quiz', 'Qaseeda', 'Nasheeda', 'Group Song', 'Moulid Parayanam', 'Collage']
-};
-
-var REPO = 'saadchadu/ssfchakkarakal';
-var FOLDER = 'results';
-var API_BASE = 'https://api.github.com/repos/' + REPO + '/contents/' + FOLDER + '/';
-var RAW_BASE = 'https://raw.githubusercontent.com/' + REPO + '/master/' + FOLDER + '/';
-var publishedResults = {};
-
-// Fetch published results for a category from its folder
-function fetchCategoryResults(category, callback) {
-  if (publishedResults[category]) {
-    callback(publishedResults[category]);
-    return;
-  }
-
-  fetch(API_BASE + encodeURIComponent(category))
-    .then(function(res) {
-      if (!res.ok) throw new Error('empty');
-      return res.json();
-    })
-    .then(function(files) {
-      var results = {};
-      files.forEach(function(f) {
-        if (/\.(png|jpg|jpeg|webp)$/i.test(f.name)) {
-          var key = f.name.replace(/\.(png|jpg|jpeg|webp)$/i, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
-          results[key] = f.name;
-        }
-      });
-      publishedResults[category] = results;
-      callback(results);
-    })
-    .catch(function() {
-      publishedResults[category] = {};
-      callback({});
-    });
-}
-
-function selectCategory(category, btn) {
-  document.querySelectorAll('.cat-chip').forEach(function(t) { t.classList.remove('active'); });
-  btn.classList.add('active');
-
-  var list = document.getElementById('results-list');
-  var items = categoryItems[category] || [];
-
-  if (items.length === 0) {
-    list.innerHTML = '<div class="results-loading">No items in this category</div>';
-    return;
-  }
-
-  list.innerHTML = '<div class="results-loading">Loading results...</div>';
-
-  fetchCategoryResults(category, function(results) {
-    var html = '';
-    items.forEach(function(item) {
-      var fileKey = item.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
-      var fileName = results[fileKey];
-      var isPublished = !!fileName;
-
-      html += '<div class="result-item">';
-      html += '<div class="result-item-info">';
-      html += '<span class="result-item-name">' + item + '</span>';
-
-      if (isPublished) {
-        html += '<span class="result-item-status published">Result published</span>';
-      } else {
-        html += '<span class="result-item-status pending">Result not published yet</span>';
-      }
-
-      html += '</div>';
-
-      if (isPublished) {
-        var rawUrl = RAW_BASE + encodeURIComponent(category) + '/' + encodeURIComponent(fileName);
-        html += '<a href="' + rawUrl + '" download="' + fileName + '" class="result-download-btn">';
-        html += '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
-        html += 'Download';
-        html += '</a>';
-      } else {
-        html += '<div class="result-pending-icon">';
-        html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
-        html += '</div>';
-      }
-
-      html += '</div>';
-    });
-
-    list.innerHTML = html;
-  });
-}
-
-// Auto-select first category on load
-document.addEventListener('DOMContentLoaded', function() {
-  var firstChip = document.querySelector('.cat-chip');
-  if (firstChip) firstChip.classList.add('active');
-});
 </script>
 </body>
 </html>
