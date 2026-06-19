@@ -768,33 +768,38 @@ var categoryItems = {
 
 var REPO = 'saadchadu/ssfchakkarakal';
 var FOLDER = 'results';
-var API_URL = 'https://api.github.com/repos/' + REPO + '/contents/' + FOLDER;
+var API_BASE = 'https://api.github.com/repos/' + REPO + '/contents/' + FOLDER + '/';
 var RAW_BASE = 'https://raw.githubusercontent.com/' + REPO + '/master/' + FOLDER + '/';
-var publishedResults = null;
+var publishedResults = {};
 
-// Fetch published results on page load
-fetch(API_URL)
-  .then(function(res) {
-    if (!res.ok) throw new Error('empty');
-    return res.json();
-  })
-  .then(function(files) {
-    publishedResults = {};
-    files.forEach(function(f) {
-      if (/\.(png|jpg|jpeg|webp)$/i.test(f.name)) {
-        var key = f.name.replace(/\.(png|jpg|jpeg|webp)$/i, '').toLowerCase();
-        publishedResults[key] = f.name;
-      }
+// Fetch published results for a category from its folder
+function fetchCategoryResults(category, callback) {
+  if (publishedResults[category]) {
+    callback(publishedResults[category]);
+    return;
+  }
+
+  fetch(API_BASE + encodeURIComponent(category))
+    .then(function(res) {
+      if (!res.ok) throw new Error('empty');
+      return res.json();
+    })
+    .then(function(files) {
+      var results = {};
+      files.forEach(function(f) {
+        if (/\.(png|jpg|jpeg|webp)$/i.test(f.name)) {
+          var key = f.name.replace(/\.(png|jpg|jpeg|webp)$/i, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+          results[key] = f.name;
+        }
+      });
+      publishedResults[category] = results;
+      callback(results);
+    })
+    .catch(function() {
+      publishedResults[category] = {};
+      callback({});
     });
-    // If a category is already selected, re-render
-    var activeTab = document.querySelector('.cat-tab.active');
-    if (activeTab) {
-      selectCategory(activeTab.textContent, activeTab);
-    }
-  })
-  .catch(function() {
-    publishedResults = {};
-  });
+}
 
 function selectCategory(category, btn) {
   document.querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('active'); });
@@ -808,46 +813,44 @@ function selectCategory(category, btn) {
     return;
   }
 
-  if (publishedResults === null) {
-    list.innerHTML = '<div class="results-loading">Loading results...</div>';
-    return;
-  }
+  list.innerHTML = '<div class="results-loading">Loading results...</div>';
 
-  var html = '';
-  items.forEach(function(item) {
-    // Build possible file key: category-itemname (lowercased, spaces to hyphens)
-    var fileKey = (category + '-' + item).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
-    var fileName = publishedResults[fileKey];
-    var isPublished = !!fileName;
+  fetchCategoryResults(category, function(results) {
+    var html = '';
+    items.forEach(function(item) {
+      var fileKey = item.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+      var fileName = results[fileKey];
+      var isPublished = !!fileName;
 
-    html += '<div class="result-item">';
-    html += '<div class="result-item-info">';
-    html += '<span class="result-item-name">' + item + '</span>';
+      html += '<div class="result-item">';
+      html += '<div class="result-item-info">';
+      html += '<span class="result-item-name">' + item + '</span>';
 
-    if (isPublished) {
-      html += '<span class="result-item-status published">Result published</span>';
-    } else {
-      html += '<span class="result-item-status pending">Result not published yet</span>';
-    }
+      if (isPublished) {
+        html += '<span class="result-item-status published">Result published</span>';
+      } else {
+        html += '<span class="result-item-status pending">Result not published yet</span>';
+      }
 
-    html += '</div>';
-
-    if (isPublished) {
-      var rawUrl = RAW_BASE + encodeURIComponent(fileName);
-      html += '<a href="' + rawUrl + '" download="' + fileName + '" class="result-download-btn">';
-      html += '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
-      html += 'Download';
-      html += '</a>';
-    } else {
-      html += '<div class="result-pending-icon">';
-      html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
       html += '</div>';
-    }
 
-    html += '</div>';
+      if (isPublished) {
+        var rawUrl = RAW_BASE + encodeURIComponent(category) + '/' + encodeURIComponent(fileName);
+        html += '<a href="' + rawUrl + '" download="' + fileName + '" class="result-download-btn">';
+        html += '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+        html += 'Download';
+        html += '</a>';
+      } else {
+        html += '<div class="result-pending-icon">';
+        html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+        html += '</div>';
+      }
+
+      html += '</div>';
+    });
+
+    list.innerHTML = html;
   });
-
-  list.innerHTML = html;
 }
 
 // Auto-select first category on load
