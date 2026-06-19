@@ -256,6 +256,120 @@ body {
   box-shadow: 0 2px 8px rgba(228, 79, 87, 0.3);
 }
 
+/* Team Leaderboard */
+.leaderboard {
+  margin-bottom: 1.5rem;
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.lb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, var(--purple-600), var(--purple-800));
+}
+.lb-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lb-header-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.lb-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+.lb-subtitle {
+  font-size: 0.6875rem;
+  color: rgba(255,255,255,0.7);
+  font-weight: 500;
+  margin-top: 1px;
+}
+.lb-published {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255,255,255,0.18);
+  padding: 5px 10px;
+  border-radius: 14px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.lb-list {
+  padding: 8px 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.lb-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 10px;
+  border-radius: var(--radius-md);
+  transition: background 0.5s ease, transform 0.5s ease;
+}
+.lb-row.rank-1 { background: linear-gradient(90deg, rgba(245,197,24,0.14), transparent); }
+.lb-row.rank-2 { background: linear-gradient(90deg, rgba(148,163,184,0.14), transparent); }
+.lb-row.rank-3 { background: linear-gradient(90deg, rgba(217,119,66,0.12), transparent); }
+.lb-rank {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  background: #F1F2F6;
+  color: var(--text-secondary);
+}
+.lb-row.rank-1 .lb-rank { background: #F5C518; color: #5A4500; }
+.lb-row.rank-2 .lb-rank { background: #C7CDD9; color: #3A414F; }
+.lb-row.rank-3 .lb-rank { background: #E0A06A; color: #5A3415; }
+.lb-team {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.lb-points {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.lb-points-value {
+  font-size: 1.0625rem;
+  font-weight: 800;
+  color: var(--purple-600);
+  font-variant-numeric: tabular-nums;
+}
+.lb-points-label {
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 /* Legend */
 .legend {
   margin-top: 1.5rem;
@@ -612,6 +726,23 @@ body {
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- Team Leaderboard -->
+  <section class="leaderboard" id="leaderboard">
+    <div class="lb-header">
+      <div class="lb-header-left">
+        <div class="lb-header-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>
+        </div>
+        <div>
+          <div class="lb-title">Team Total</div>
+          <div class="lb-subtitle">Live championship standings</div>
+        </div>
+      </div>
+      <span class="lb-published" id="lb-published">0 results published</span>
+    </div>
+    <div class="lb-list" id="lb-list"></div>
   </section>
 
   <div id="schedule-section"></div>
