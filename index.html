@@ -1105,6 +1105,68 @@ function switchDay(day, btn) {
   btn.classList.add('active');
   btn.setAttribute('aria-selected', 'true');
 }
+
+// Team Leaderboard
+// To update scores, just change the points below. Rankings re-sort automatically.
+var TEAM_SCORES = {
+  'Chembilode': 0,
+  'Chakkarakkal': 0,
+  'Peralasseri': 0,
+  'Kadachira': 0,
+  'Kanhirode': 0
+};
+
+function renderLeaderboard() {
+  var list = document.getElementById('lb-list');
+  if (!list) return;
+
+  var teams = Object.keys(TEAM_SCORES).map(function(name) {
+    return { name: name, points: TEAM_SCORES[name] };
+  });
+
+  // Sort by points (descending). Ties keep alphabetical order.
+  teams.sort(function(a, b) {
+    if (b.points !== a.points) return b.points - a.points;
+    return a.name.localeCompare(b.name);
+  });
+
+  var html = '';
+  teams.forEach(function(team, i) {
+    var rank = i + 1;
+    html += '<div class="lb-row rank-' + rank + '">';
+    html += '<span class="lb-rank">' + rank + '</span>';
+    html += '<span class="lb-team">' + team.name + '</span>';
+    html += '<span class="lb-points"><span class="lb-points-value">' + team.points + '</span><span class="lb-points-label">pts</span></span>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+}
+
+// Count total published results across all categories
+function loadPublishedCount() {
+  var el = document.getElementById('lb-published');
+  if (!el) return;
+
+  var REPO = 'saadchadu/ssfchakkarakal';
+  var API_BASE = 'https://api.github.com/repos/' + REPO + '/contents/results/';
+  var categories = ['LP', 'UP', 'HS', 'HSS', 'Junior', 'Senior', 'General'];
+
+  Promise.all(categories.map(function(cat) {
+    return fetch(API_BASE + encodeURIComponent(cat))
+      .then(function(res) { return res.ok ? res.json() : []; })
+      .then(function(files) {
+        if (!Array.isArray(files)) return 0;
+        return files.filter(function(f) { return /\.(png|jpg|jpeg|webp)$/i.test(f.name); }).length;
+      })
+      .catch(function() { return 0; });
+  })).then(function(counts) {
+    var total = counts.reduce(function(a, b) { return a + b; }, 0);
+    el.textContent = total + (total === 1 ? ' result published' : ' results published');
+  });
+}
+
+renderLeaderboard();
+loadPublishedCount();
 </script>
 </body>
 </html>
