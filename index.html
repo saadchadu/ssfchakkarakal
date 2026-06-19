@@ -1107,12 +1107,13 @@ function switchDay(day, btn) {
 }
 
 // Team Leaderboard
-// To update scores, just change the points below. Rankings re-sort automatically.
+// To update scores, edit scores.json (no need to touch this file).
+// The order below is the default/tie-break order before any points are added.
 var TEAM_SCORES = {
-  'Chembilode': 0,
+  'Kadachira': 0,
   'Chakkarakkal': 0,
   'Peralasseri': 0,
-  'Kadachira': 0,
+  'Chembilode': 0,
   'Kanhirode': 0
 };
 
@@ -1120,14 +1121,15 @@ function renderLeaderboard() {
   var list = document.getElementById('lb-list');
   if (!list) return;
 
-  var teams = Object.keys(TEAM_SCORES).map(function(name) {
-    return { name: name, points: TEAM_SCORES[name] };
+  var order = Object.keys(TEAM_SCORES);
+  var teams = order.map(function(name, idx) {
+    return { name: name, points: TEAM_SCORES[name], order: idx };
   });
 
-  // Sort by points (descending). Ties keep alphabetical order.
+  // Sort by points (descending). Ties keep the defined order above.
   teams.sort(function(a, b) {
     if (b.points !== a.points) return b.points - a.points;
-    return a.name.localeCompare(b.name);
+    return a.order - b.order;
   });
 
   var html = '';
@@ -1140,6 +1142,21 @@ function renderLeaderboard() {
     html += '</div>';
   });
   list.innerHTML = html;
+}
+
+// Load scores from scores.json if present, then render
+function loadScores() {
+  fetch('scores.json?t=' + Date.now())
+    .then(function(res) { if (!res.ok) throw new Error('no file'); return res.json(); })
+    .then(function(data) {
+      if (data && typeof data === 'object') {
+        Object.keys(data).forEach(function(name) {
+          if (name in TEAM_SCORES) TEAM_SCORES[name] = Number(data[name]) || 0;
+        });
+      }
+      renderLeaderboard();
+    })
+    .catch(function() { renderLeaderboard(); });
 }
 
 // Count total published results across all categories
@@ -1166,6 +1183,7 @@ function loadPublishedCount() {
 }
 
 renderLeaderboard();
+loadScores();
 loadPublishedCount();
 </script>
 </body>
