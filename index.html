@@ -714,6 +714,7 @@ body {
   }
 }
 </style>
+<script src="scores.js"></script>
 </head>
 <body>
 <div class="page">
@@ -1131,7 +1132,7 @@ function switchDay(day, btn) {
 }
 
 // Team Leaderboard
-// To update scores, edit scores.json (no need to touch this file).
+// To update scores, edit scores.js ONLY (change the numbers there).
 // The order below is the default/tie-break order before any points are added.
 var TEAM_SCORES = {
   'Kadachira': 0,
@@ -1168,19 +1169,19 @@ function renderLeaderboard() {
   list.innerHTML = html;
 }
 
-// Load scores from scores.json if present, then render
+// Load scores from scores.js (works on file:// and on a web server)
 function loadScores() {
-  fetch('scores.json?t=' + Date.now())
-    .then(function(res) { if (!res.ok) throw new Error('no file'); return res.json(); })
-    .then(function(data) {
-      if (data && typeof data === 'object') {
-        Object.keys(data).forEach(function(name) {
-          if (name in TEAM_SCORES) TEAM_SCORES[name] = Number(data[name]) || 0;
-        });
-      }
-      renderLeaderboard();
-    })
-    .catch(function() { renderLeaderboard(); });
+  if (window.SAHITYOTSAV_SCORES && typeof window.SAHITYOTSAV_SCORES === 'object') {
+    applyScores(window.SAHITYOTSAV_SCORES);
+  }
+  renderLeaderboard();
+}
+
+function applyScores(data) {
+  if (!data || typeof data !== 'object') return;
+  Object.keys(data).forEach(function(name) {
+    if (name in TEAM_SCORES) TEAM_SCORES[name] = Number(data[name]) || 0;
+  });
 }
 
 // Count total published results across all categories
@@ -1206,7 +1207,6 @@ function loadPublishedCount() {
   });
 }
 
-renderLeaderboard();
 loadScores();
 loadPublishedCount();
 </script>
