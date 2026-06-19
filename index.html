@@ -254,9 +254,6 @@ body {
   margin-bottom: 1.5rem;
 }
 .results-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   margin-bottom: 14px;
 }
 .results-title {
@@ -264,88 +261,108 @@ body {
   font-weight: 700;
   color: var(--text-primary);
 }
-.results-badge {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  padding: 3px 8px;
+.category-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.cat-tab {
+  padding: 8px 14px;
   border-radius: 20px;
-  background: var(--purple-100);
-  color: var(--purple-800);
-}
-.results-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-.result-card {
-  background: var(--card-bg);
-  border-radius: var(--radius-md);
   border: 1px solid var(--border);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.15s, box-shadow 0.15s;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
-.result-card:active {
-  transform: scale(0.97);
-  box-shadow: var(--shadow-md);
+.cat-tab.active {
+  background: var(--purple-600);
+  color: #fff;
+  border-color: var(--purple-600);
+  box-shadow: 0 2px 8px rgba(83, 74, 183, 0.25);
 }
-.result-card img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  display: block;
+.cat-tab:active:not(.active) {
+  background: var(--purple-100);
 }
-.result-card-footer {
-  padding: 10px 12px;
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.result-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  padding: 14px 16px;
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
 }
-.result-name {
+.result-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+.result-item-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.result-item-status {
   font-size: 0.6875rem;
   font-weight: 500;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex: 1;
 }
-.result-download {
+.result-item-status.published {
+  color: var(--green-800);
+}
+.result-item-status.pending {
+  color: var(--text-secondary);
+}
+.result-download-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
   background: var(--purple-100);
   color: var(--purple-800);
   text-decoration: none;
+  font-size: 0.6875rem;
+  font-weight: 600;
   flex-shrink: 0;
   transition: background 0.2s;
 }
-.result-download:active {
+.result-download-btn:active {
   background: var(--purple-600);
   color: #fff;
 }
+.result-pending-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #F3F4F6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
 .results-loading {
-  grid-column: 1 / -1;
   text-align: center;
   padding: 2rem;
   font-size: 0.8125rem;
   color: var(--text-secondary);
-}
-.results-empty {
-  text-align: center;
-  padding: 2rem 1rem;
   background: var(--card-bg);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   border: 1px solid var(--border);
-}
-.results-empty p {
-  margin-top: 10px;
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
 }
 
 /* Instagram Section */
@@ -674,14 +691,18 @@ body {
   <section class="results-section">
     <div class="results-header">
       <h2 class="results-title">Results</h2>
-      <span class="results-badge" id="results-count"></span>
     </div>
-    <div class="results-grid" id="results-grid">
-      <div class="results-loading">Loading results...</div>
+    <div class="category-tabs">
+      <button class="cat-tab active" onclick="selectCategory('LP', this)">LP</button>
+      <button class="cat-tab" onclick="selectCategory('UP', this)">UP</button>
+      <button class="cat-tab" onclick="selectCategory('HS', this)">HS</button>
+      <button class="cat-tab" onclick="selectCategory('HSS', this)">HSS</button>
+      <button class="cat-tab" onclick="selectCategory('Junior', this)">Junior</button>
+      <button class="cat-tab" onclick="selectCategory('Senior', this)">Senior</button>
+      <button class="cat-tab" onclick="selectCategory('General', this)">General</button>
     </div>
-    <div class="results-empty" id="results-empty" style="display:none;">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.5"><path d="M9 12h6m-3-3v6m-7 4h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-      <p>Results will be posted here soon</p>
+    <div class="results-list" id="results-list">
+      <div class="results-loading">Select a category to view results</div>
     </div>
   </section>
 
@@ -734,58 +755,106 @@ function switchDay(day, btn) {
   btn.setAttribute('aria-selected', 'true');
 }
 
-// Auto-fetch result posters from GitHub
-(function() {
-  var REPO = 'saadchadu/ssfchakkarakal';
-  var FOLDER = 'results';
-  var API_URL = 'https://api.github.com/repos/' + REPO + '/contents/' + FOLDER;
-  var RAW_BASE = 'https://raw.githubusercontent.com/' + REPO + '/master/' + FOLDER + '/';
+// Category items data
+var categoryItems = {
+  LP: ['Madh Ganam', 'Katha Kathanam', 'Quiz', 'Pencil Drawing', 'Jalachayam', 'Prasangam Malayalam', 'Vayana Arabi Mal', 'Vayana Mal', 'Bhasha Keli', 'Book Test'],
+  UP: ['Katha Kathanam', 'Mappilappattu', 'Ghanithakeli', 'Quiz', 'Pencil Drawing', 'Jalachayam', 'Katharachana', 'Spelling Bee', 'Sudoku', 'Prasangam Malayalam', 'Book Test'],
+  HS: ['Madhganam', 'Kavitha Parayanam Malayalam', 'Quiz', 'Katha Rachana', 'Kavitha Rachana', 'Essay Malayalam', 'Caption Writing', 'Language Game', 'Pencil Drawing', 'Water Colour', 'Mappilappattu', 'Arabi Padyam', 'Prasangam English', 'Prasangam Malayalam', 'News Reading', 'Urdu Kavitha Parayanam', 'Book Test'],
+  HSS: ['Urdu Kavitha Parayanam', 'Bhakthiganam', 'Quiz', 'Katha Rachana', 'Kavitha Rachana', 'Essay Malayalam', 'Essay English', 'Pencil Drawing', 'Water Colour', 'News Writing', 'Arabic Calligraphy', 'Digital Painting', 'Mappilappattu', 'Prasangam Malayalam', 'Book Test'],
+  Junior: ['Arabi Prasangam', 'Quiz', 'Social Text', 'Calligraphy', 'Kavitha Rachana', 'Katha Rachana', 'Essay Malayalam', 'Essay Arabi', 'Mudravakya Rachana', 'Madhgana Rachana', 'Translation Arabi', 'AI Kavitha Rachana', 'Prasangam Malayalam', 'Prasangam English', 'Mappilappattu', 'Book Test'],
+  Senior: ['Mappilappattu', 'Quiz', 'Social Text', 'E Poster', 'Poster Designing', 'Katha Rachana', 'Kavitha Rachana', 'Kavitha Rachana English', 'Essay Malayalam', 'Essay English', 'Essay Urdu', 'Translation English', 'Madhgana Rachana', 'Mudravakya Rachana', 'Feature Writing', 'Digital Painting', 'Digital Illustration', 'Prasangam Malayalam', 'Prasangam English', 'Hamd Urdu', "Musha'ra Alfiya", 'Kavitha Parayanam English', 'Book Test'],
+  General: ['Viplava Ganam', 'Qawali', 'Mappilappattu', 'Risala Quiz', 'Qaseeda', 'Nasheeda', 'Group Song', 'Moulid Parayanam', 'Collage']
+};
 
-  var grid = document.getElementById('results-grid');
-  var empty = document.getElementById('results-empty');
-  var countBadge = document.getElementById('results-count');
+var REPO = 'saadchadu/ssfchakkarakal';
+var FOLDER = 'results';
+var API_URL = 'https://api.github.com/repos/' + REPO + '/contents/' + FOLDER;
+var RAW_BASE = 'https://raw.githubusercontent.com/' + REPO + '/master/' + FOLDER + '/';
+var publishedResults = null;
 
-  fetch(API_URL)
-    .then(function(res) {
-      if (!res.ok) throw new Error('No results yet');
-      return res.json();
-    })
-    .then(function(files) {
-      var images = files.filter(function(f) {
-        return /\.(png|jpg|jpeg|webp)$/i.test(f.name);
-      });
-
-      if (images.length === 0) {
-        grid.style.display = 'none';
-        empty.style.display = 'block';
-        return;
+// Fetch published results on page load
+fetch(API_URL)
+  .then(function(res) {
+    if (!res.ok) throw new Error('empty');
+    return res.json();
+  })
+  .then(function(files) {
+    publishedResults = {};
+    files.forEach(function(f) {
+      if (/\.(png|jpg|jpeg|webp)$/i.test(f.name)) {
+        var key = f.name.replace(/\.(png|jpg|jpeg|webp)$/i, '').toLowerCase();
+        publishedResults[key] = f.name;
       }
-
-      countBadge.textContent = images.length + ' poster' + (images.length > 1 ? 's' : '');
-      grid.innerHTML = '';
-
-      images.forEach(function(file) {
-        var name = file.name.replace(/\.(png|jpg|jpeg|webp)$/i, '').replace(/[-_]/g, ' ');
-        var rawUrl = RAW_BASE + encodeURIComponent(file.name);
-
-        var card = document.createElement('div');
-        card.className = 'result-card';
-        card.innerHTML =
-          '<img src="' + rawUrl + '" alt="' + name + '" loading="lazy">' +
-          '<div class="result-card-footer">' +
-            '<span class="result-name">' + name + '</span>' +
-            '<a href="' + rawUrl + '" download="' + file.name + '" class="result-download" title="Download">' +
-              '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
-            '</a>' +
-          '</div>';
-        grid.appendChild(card);
-      });
-    })
-    .catch(function() {
-      grid.style.display = 'none';
-      empty.style.display = 'block';
     });
-})();
+    // If a category is already selected, re-render
+    var activeTab = document.querySelector('.cat-tab.active');
+    if (activeTab) {
+      selectCategory(activeTab.textContent, activeTab);
+    }
+  })
+  .catch(function() {
+    publishedResults = {};
+  });
+
+function selectCategory(category, btn) {
+  document.querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+
+  var list = document.getElementById('results-list');
+  var items = categoryItems[category] || [];
+
+  if (items.length === 0) {
+    list.innerHTML = '<div class="results-loading">No items in this category</div>';
+    return;
+  }
+
+  if (publishedResults === null) {
+    list.innerHTML = '<div class="results-loading">Loading results...</div>';
+    return;
+  }
+
+  var html = '';
+  items.forEach(function(item) {
+    // Build possible file key: category-itemname (lowercased, spaces to hyphens)
+    var fileKey = (category + '-' + item).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
+    var fileName = publishedResults[fileKey];
+    var isPublished = !!fileName;
+
+    html += '<div class="result-item">';
+    html += '<div class="result-item-info">';
+    html += '<span class="result-item-name">' + item + '</span>';
+
+    if (isPublished) {
+      html += '<span class="result-item-status published">Result published</span>';
+    } else {
+      html += '<span class="result-item-status pending">Result not published yet</span>';
+    }
+
+    html += '</div>';
+
+    if (isPublished) {
+      var rawUrl = RAW_BASE + encodeURIComponent(fileName);
+      html += '<a href="' + rawUrl + '" download="' + fileName + '" class="result-download-btn">';
+      html += '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+      html += 'Download';
+      html += '</a>';
+    } else {
+      html += '<div class="result-pending-icon">';
+      html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+      html += '</div>';
+    }
+
+    html += '</div>';
+  });
+
+  list.innerHTML = html;
+}
+
+// Auto-select first category on load
+document.addEventListener('DOMContentLoaded', function() {
+  var firstTab = document.querySelector('.cat-tab');
+  if (firstTab) selectCategory('LP', firstTab);
+});
 </script>
 </body>
 </html>
