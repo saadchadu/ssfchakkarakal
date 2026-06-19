@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Sahityotsav - Program Schedule</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple-600: #534AB7;
+  --purple-100: #EEEDFE;
+  --purple-800: #3C3489;
+  --green-100: #E1F5EE;
+  --green-800: #085041;
+  --bg: #F8F7FC;
+  --card-bg: #FFFFFF;
+  --text-primary: #1A1A2E;
+  --text-secondary: #6B7280;
+  --border: #E5E7EB;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100dvh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 2rem;
+}
+
+/* Header */
+.festival-header {
+  text-align: center;
+  padding: 1.5rem 0 1.25rem;
+}
+.festival-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--purple-800);
+  line-height: 1.2;
+}
+.festival-logo {
+  max-width: 200px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.festival-sub {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 6px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Day Tabs */
+.day-tabs {
+  display: flex;
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 4px;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+}
+.day-tab {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  border: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.day-tab.active {
+  background: var(--purple-600);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(83, 74, 183, 0.3);
+}
+.day-tab:active:not(.active) {
+  background: rgba(83, 74, 183, 0.06);
+}
+
+/* Panels */
+.day-panel { display: none; }
+.day-panel.active { display: block; }
+
+/* Stage Cards */
+.stage-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.stage-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  transition: box-shadow 0.2s;
+}
+.stage-card:active {
+  box-shadow: var(--shadow-md);
+}
+
+.stage-card-header {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.stage-header-sat { background: var(--purple-100); }
+.stage-header-sun { background: var(--green-100); }
+
+.stage-name {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.sat-stage-name { color: var(--purple-800); }
+.sun-stage-name { color: var(--green-800); }
+
+.stage-time {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: rgba(255,255,255,0.7);
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+
+/* Items */
+.stage-items {
+  padding: 12px 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #F3F4F6;
+}
+.item:last-child { border-bottom: none; }
+
+.item-badge {
+  font-size: 0.625rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  min-width: 36px;
+  text-align: center;
+}
+.item-name {
+  font-size: 0.8125rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+  font-weight: 450;
+}
+
+/* Badge Colors */
+.badge-lp  { background: #E6F1FB; color: #0C447C; }
+.badge-up  { background: #EAF3DE; color: #27500A; }
+.badge-hs  { background: #EEEDFE; color: #3C3489; }
+.badge-hss { background: #FAEEDA; color: #633806; }
+.badge-jr  { background: #E1F5EE; color: #085041; }
+.badge-sr  { background: #FAECE7; color: #712B13; }
+.badge-gen { background: #FBEAF0; color: #72243E; }
+.badge-cat { background: #F1EFE8; color: #444441; }
+.badge-j   { background: #FAEEDA; color: #633806; }
+.badge-s   { background: #EEEDFE; color: #3C3489; }
+.badge-g   { background: #FBEAF0; color: #72243E; }
+
+/* Inauguration */
+.inaug-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 6px 0;
+  background: linear-gradient(135deg, #534AB7, #7C6FDB);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 24px;
+  box-shadow: 0 2px 8px rgba(83, 74, 183, 0.25);
+}
+
+/* Legend */
+.legend {
+  margin-top: 1.5rem;
+  padding: 16px;
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.legend-title {
+  font-size: 0.6875rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.legend-label {
+  font-size: 0.6875rem;
+  color: var(--text-secondary);
+  font-weight: 450;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .page { max-width: 900px; padding: 2rem; }
+  .stage-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .legend-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .page { max-width: 1100px; }
+  .stage-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .legend-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="festival-header">
+    <img src="sahi-dark.png" alt="Sahityotsav" class="festival-logo">
+    <p class="festival-sub">Program Schedule</p>
+  </header>
+
+  <nav class="day-tabs" role="tablist">
+    <button class="day-tab active" role="tab" aria-selected="true" onclick="switchDay('sat', this)">Saturday</button>
+    <button class="day-tab" role="tab" aria-selected="false" onclick="switchDay('sun', this)">Sunday</button>
+  </nav>
+
+  <div id="sat" class="day-panel active" role="tabpanel">
+    <div class="stage-grid">
+
+      <div class="stage-card">
+        <div class="stage-card-header stage-header-sat">
+          <span class="stage-name sat-stage-name">Stage 1</span>
+          <span class="stage-time">3:00 PM</span>
+        </div>
+        <div class="stage-items">
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">Madhganam</span></div>
+          <div class="item"><span class="item-badge badge-up">UP</span><span class="item-name">Katha Kathanam</span></div>
+          <div class="item"><span class="item-badge badge-lp">LP</span><span class="item-name">Madh Ganam</span></div>
+          <div class="item"><span class="item-badge badge-up">UP</span><span class="item-name">Mappilappattu</span></div>
+          <div class="item"><span class="item-badge badge-gen">Gen</span><span class="item-name">Viplava Ganam</span></div>
+          <div style="padding: 8px 0;"><span class="inaug-pill">&#9733; Inauguration (after Magrib)</span></div>
+          <div class="item"><span class="item-badge badge-g">G</span><span class="item-name">Qawali</span></div>
+        </div>
+      </div>
+
+      <div class="stage-card">
+        <div class="stage-card-header stage-header-sat">
+          <span class="stage-name sat-stage-name">Stage 2</span>
+          <span class="stage-time">3:00 PM</span>
+        </div>
+        <div class="stage-items">
+          <div class="item"><span class="item-badge badge-lp">LP</span><span class="item-name">Katha Kathanam</span></div>
+          <div class="item"><span class="item-badge badge-hss">HSS</span><span class="item-name">Urdu Kavitha Parayanam</span></div>
+          <div class="item"><span class="item-badge badge-gen">Gen</span><span class="item-name">Mappilappattu</span></div>
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">Kavitha Parayanam Malayalam</span></div>
+          <div class="item"><span class="item-badge badge-hss">HSS</span><span class="item-name">Bhakthiganam</span></div>
+          <div class="item"><span class="item-badge badge-jr">JR</span><span class="item-name">Arabi Prasangam</span></div>
+          <div class="item"><span class="item-badge badge-sr">SR</span><span class="item-name">Mappilappattu</span></div>
+        </div>
+      </div>
+
+      <div class="stage-card">
+        <div class="stage-card-header stage-header-sat">
+          <span class="stage-name sat-stage-name">Stage 3</span>
+          <span class="stage-time">9:00 AM</span>
+        </div>
+        <div class="stage-items">
+          <div class="item"><span class="item-badge badge-up">UP</span><span class="item-name">Ghanithakeli</span></div>
+          <div class="item"><span class="item-badge badge-lp">LP</span><span class="item-name">Quiz</span></div>
+          <div class="item"><span class="item-badge badge-up">UP</span><span class="item-name">Quiz</span></div>
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">Quiz</span></div>
+          <div class="item"><span class="item-badge badge-hss">HSS</span><span class="item-name">Quiz</span></div>
+          <div class="item"><span class="item-badge badge-jr">JR</span><span class="item-name">Quiz</span></div>
+          <div class="item"><span class="item-badge badge-sr">SR</span><span class="item-name">Quiz</span></div>
+          <div class="item"><span class="item-badge badge-gen">Gen</span><span class="item-name">Risala Quiz</span></div>
+        </div>
+      </div>
+
+      <div class="stage-card">
+        <div class="stage-card-header stage-header-sat">
+          <span class="stage-name sat-stage-name">Stage 4</span>
+          <span class="stage-time">9:00 AM</span>
+        </div>
+        <div class="stage-items">
+          <div class="item"><span class="item-badge badge-lp">LP</span><span class="item-name">Pencil Drawing</span></div>
+          <div class="item"><span class="item-badge badge-lp">LP</span><span class="item-name">Jalachayam</span></div>
+          <div class="item"><span class="item-badge badge-up">UP</span><span class="item-name">Pencil Drawing</span></div>
+          <div class="item"><span class="item-badge badge-up">UP</span><span class="item-name">Jalachayam</span></div>
+          <div class="item"><span class="item-badge badge-up">UP</span><span class="item-name">Katharachana</span></div>
+          <div class="item"><span class="item-badge badge-up">UP</span><span class="item-name">Spelling Bee</span></div>
+          <div class="item"><span class="item-badge badge-up">UP</span><span class="item-name">Sudoku</span></div>
+          <div class="item"><span class="item-badge badge-jr">JR</span><span class="item-name">Social Text</span></div>
+          <div class="item"><span class="item-badge badge-sr">SR</span><span class="item-name">Social Text</span></div>
+        </div>
+      </div>
+
+      <div class="stage-card">
+        <div class="stage-card-header stage-header-sat">
+          <span class="stage-name sat-stage-name">Stage 5</span>
+          <span class="stage-time">9:00 AM</span>
+        </div>
+        <div class="stage-items">
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">Katha Rachana</span></div>
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">Kavitha Rachana</span></div>
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">Essay Malayalam</span></div>
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">Caption Writing</span></div>
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">Language Game</span></div>
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">Pencil Drawing</span></div>
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">Water Colour</span></div>
+          <div class="item"><span class="item-badge badge-jr">JR</span><span class="item-name">Calligraphy</span></div>
+          <div class="item"><span class="item-badge badge-sr">SR</span><span class="item-name">E Poster</span></div>
+        </div>
+      </div>
+
+      <div class="stage-card">
+        <div class="stage-card-header stage-header-sat">
+          <span class="stage-name sat-stage-name">Stage 6</span>
+          <span class="stage-time">9:00 AM</span>
+        </div>
+        <div class="stage-items">
+          <div class="item"><span class="item-badge badge-hss">HSS</span><span class="item-name">Katha Rachana</span></div>
+          <div class="item"><span class="item-badge badge-hss">HSS</span><span class="item-name">Kavitha Rachana</span></div>
+          <div class="item"><span class="item-badge badge-hss">HSS</span><span class="item-name">Essay Malayalam</span></div>
+          <div class="item"><span class="item-badge badge-hss">HSS</span><span class="item-name">Essay English</span></div>
+          <div class="item"><span class="item-badge badge-hss">HSS</span><span class="item-name">Pencil Drawing</span></div>
+          <div class="item"><span class="item-badge badge-hss">HSS</span><span class="item-name">Water Colour</span></div>
+          <div class="item"><span class="item-badge badge-hss">HSS</span><span class="item-name">News Writing</span></div>
+          <div class="item"><span class="item-badge badge-hss">HSS</span><span class="item-name">Arabic Calligraphy</span></div>
+          <div class="item"><span class="item-badge badge-sr">SR</span><span class="item-name">Poster Designing</span></div>
+          <div class="item"><span class="item-badge badge-hss">HSS</span><span class="item-name">Digital Painting</span></div>
+        </div>
+      </div>
+
+      <div class="stage-card">
+        <div class="stage-card-header stage-header-sat">
+          <span class="stage-name sat-stage-name">Stage 7</span>
+          <span class="stage-time">9:00 AM</span>
+        </div>
+        <div class="stage-items">
+          <div class="item"><span class="item-badge badge-j">J</span><span class="item-name">Kavitha Rachana</span></div>
+          <div class="item"><span class="item-badge badge-j">J</span><span class="item-name">Katha Rachana</span></div>
+          <div class="item"><span class="item-badge badge-j">J</span><span class="item-name">Essay Malayalam</span></div>
+          <div class="item"><span class="item-badge badge-j">J</span><span class="item-name">Essay Arabi</span></div>
+          <div class="item"><span class="item-badge badge-j">J</span><span class="item-name">Mudravakya Rachana</span></div>
+          <div class="item"><span class="item-badge badge-j">J</span><span class="item-name">Madhgana Rachana</span></div>
+          <div class="item"><span class="item-badge badge-j">J</span><span class="item-name">Translation Arabi</span></div>
+          <div class="item"><span class="item-badge badge-j">J</span><span class="item-name">AI Kavitha Rachana</span></div>
+        </div>
+      </div>
+
+      <div class="stage-card">
+        <div class="stage-card-header stage-header-sat">
+          <span class="stage-name sat-stage-name">Stage 8</span>
+          <span class="stage-time">9:00 AM</span>
+        </div>
+        <div class="stage-items">
+          <div class="item"><span class="item-badge badge-s">S</span><span class="item-name">Katha Rachana</span></div>
+          <div class="item"><span class="item-badge badge-s">S</span><span class="item-name">Kavitha Rachana</span></div>
+          <div class="item"><span class="item-badge badge-s">S</span><span class="item-name">Kavitha Rachana English</span></div>
+          <div class="item"><span class="item-badge badge-s">S</span><span class="item-name">Essay Malayalam</span></div>
+          <div class="item"><span class="item-badge badge-s">S</span><span class="item-name">Essay English</span></div>
+          <div class="item"><span class="item-badge badge-s">S</span><span class="item-name">Essay Urdu</span></div>
+          <div class="item"><span class="item-badge badge-s">S</span><span class="item-name">Translation English</span></div>
+          <div class="item"><span class="item-badge badge-s">S</span><span class="item-name">Madhgana Rachana</span></div>
+          <div class="item"><span class="item-badge badge-s">S</span><span class="item-name">Mudravakya Rachana</span></div>
+          <div class="item"><span class="item-badge badge-s">S</span><span class="item-name">Feature Writing</span></div>
+          <div class="item"><span class="item-badge badge-s">S</span><span class="item-name">Digital Painting</span></div>
+          <div class="item"><span class="item-badge badge-s">S</span><span class="item-name">Digital Illustration</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="sun" class="day-panel" role="tabpanel">
+    <div class="stage-grid">
+
+      <div class="stage-card">
+        <div class="stage-card-header stage-header-sun">
+          <span class="stage-name sun-stage-name">Stage 1</span>
+          <span class="stage-time">9:00 AM</span>
+        </div>
+        <div class="stage-items">
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">Mappilappattu</span></div>
+          <div class="item"><span class="item-badge badge-gen">Gen</span><span class="item-name">Qaseeda</span></div>
+          <div class="item"><span class="item-badge badge-hss">HSS</span><span class="item-name">Mappilappattu</span></div>
+          <div class="item"><span class="item-badge badge-up">UP</span><span class="item-name">Prasangam Malayalam</span></div>
+          <div class="item"><span class="item-badge badge-gen">Gen</span><span class="item-name">Nasheeda</span></div>
+          <div class="item"><span class="item-badge badge-cat">Cat-A</span><span class="item-name">Group Song</span></div>
+          <div class="item"><span class="item-badge badge-jr">JR</span><span class="item-name">Prasangam Malayalam</span></div>
+          <div class="item"><span class="item-badge badge-jr">JR</span><span class="item-name">Mappilappattu</span></div>
+          <div class="item"><span class="item-badge badge-cat">Cat-B</span><span class="item-name">Group Song</span></div>
+        </div>
+      </div>
+
+      <div class="stage-card">
+        <div class="stage-card-header stage-header-sun">
+          <span class="stage-name sun-stage-name">Stage 2</span>
+          <span class="stage-time">9:00 AM</span>
+        </div>
+        <div class="stage-items">
+          <div class="item"><span class="item-badge badge-lp">LP</span><span class="item-name">Prasangam Malayalam</span></div>
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">Arabi Padyam</span></div>
+          <div class="item"><span class="item-badge badge-sr">SR</span><span class="item-name">Prasangam Malayalam</span></div>
+          <div class="item"><span class="item-badge badge-gen">Gen</span><span class="item-name">Moulid Parayanam</span></div>
+          <div class="item"><span class="item-badge badge-sr">SR</span><span class="item-name">Mappilappattu</span></div>
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">Prasangam English</span></div>
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">Prasangam Malayalam</span></div>
+          <div class="item"><span class="item-badge badge-hss">HSS</span><span class="item-name">Prasangam Malayalam</span></div>
+          <div class="item"><span class="item-badge badge-jr">JR</span><span class="item-name">Prasangam English</span></div>
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">Urdu Kavitha Parayanam</span></div>
+          <div class="item"><span class="item-badge badge-s">S</span><span class="item-name">Hamd Urdu</span></div>
+        </div>
+      </div>
+
+      <div class="stage-card">
+        <div class="stage-card-header stage-header-sun">
+          <span class="stage-name sun-stage-name">Stage 3</span>
+          <span class="stage-time">9:00 AM</span>
+        </div>
+        <div class="stage-items">
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">News Reading</span></div>
+          <div class="item"><span class="item-badge badge-lp">LP</span><span class="item-name">Vayana Arabi Mal</span></div>
+          <div class="item"><span class="item-badge badge-lp">LP</span><span class="item-name">Vayana Mal</span></div>
+          <div class="item"><span class="item-badge badge-lp">LP</span><span class="item-name">Bhasha Keli</span></div>
+          <div class="item"><span class="item-badge badge-s">S</span><span class="item-name">Prasangam English</span></div>
+          <div class="item"><span class="item-badge badge-s">S</span><span class="item-name">Musha'ra Alfiya</span></div>
+          <div class="item"><span class="item-badge badge-s">S</span><span class="item-name">Kavitha Parayanam English</span></div>
+        </div>
+      </div>
+
+      <div class="stage-card">
+        <div class="stage-card-header stage-header-sun">
+          <span class="stage-name sun-stage-name">Stage 4</span>
+          <span class="stage-time">9:00 AM</span>
+        </div>
+        <div class="stage-items">
+          <div class="item"><span class="item-badge badge-g">G</span><span class="item-name">Collage</span></div>
+          <div class="item"><span class="item-badge badge-lp">LP</span><span class="item-name">Book Test</span></div>
+          <div class="item"><span class="item-badge badge-up">UP</span><span class="item-name">Book Test</span></div>
+          <div class="item"><span class="item-badge badge-hs">HS</span><span class="item-name">Book Test</span></div>
+          <div class="item"><span class="item-badge badge-hss">HSS</span><span class="item-name">Book Test</span></div>
+          <div class="item"><span class="item-badge badge-jr">JR</span><span class="item-name">Book Test</span></div>
+          <div class="item"><span class="item-badge badge-sr">SR</span><span class="item-name">Book Test</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-title">Levels</div>
+    <div class="legend-grid">
+      <div class="legend-item"><span class="item-badge badge-lp">LP</span><span class="legend-label">Lower Primary</span></div>
+      <div class="legend-item"><span class="item-badge badge-up">UP</span><span class="legend-label">Upper Primary</span></div>
+      <div class="legend-item"><span class="item-badge badge-hs">HS</span><span class="legend-label">High School</span></div>
+      <div class="legend-item"><span class="item-badge badge-hss">HSS</span><span class="legend-label">Higher Secondary</span></div>
+      <div class="legend-item"><span class="item-badge badge-jr">JR</span><span class="legend-label">Junior</span></div>
+      <div class="legend-item"><span class="item-badge badge-sr">SR</span><span class="legend-label">Senior</span></div>
+      <div class="legend-item"><span class="item-badge badge-gen">Gen</span><span class="legend-label">General</span></div>
+      <div class="legend-item"><span class="item-badge badge-j">J</span><span class="legend-label">Junior (J)</span></div>
+      <div class="legend-item"><span class="item-badge badge-s">S</span><span class="legend-label">Senior (S)</span></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function switchDay(day, btn) {
+  document.querySelectorAll('.day-panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.day-tab').forEach(function(t) {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+  });
+  document.getElementById(day).classList.add('active');
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
+}
+</script>
+</body>
+</html>
