@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Sahityotsav 2026 — Program Schedule | SSF Chakkarakkal</title>
-<meta name="description" content="Explore the full program schedule for Sahityotsav 2026 by SSF Chakkarakkal Division. Three days of literary and arts competitions across every category — June 19–21, Muthukulty.">
+<title>Sahityotsav 2026 — Schedule, Results & Team Standings | SSF Chakkarakkal</title>
+<meta name="description" content="Sahityotsav 2026 by SSF Chakkarakkal Division — view the full program schedule, check live results, and follow team standings. Three days of literary and arts competitions, June 19–21, Muthukulty.">
 <meta name="theme-color" content="#131F43">
 <link rel="icon" type="image/png" href="featured.png">
 <link rel="apple-touch-icon" href="featured.png">
@@ -12,16 +12,16 @@
 <!-- Open Graph / Facebook / WhatsApp -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Sahityotsav 2026">
-<meta property="og:title" content="Sahityotsav 2026 — Program Schedule">
-<meta property="og:description" content="Three days of literary and arts competitions by SSF Chakkarakkal Division. View the full schedule and check results — June 19–21, Muthukulty.">
+<meta property="og:title" content="Sahityotsav 2026 — Schedule, Results & Standings">
+<meta property="og:description" content="View the full schedule, check live results, and follow team standings. Three days of literary and arts competitions by SSF Chakkarakkal Division — June 19–21, Muthukulty.">
 <meta property="og:url" content="http://ssfckl.cleffon.com/index.html">
 <meta property="og:image" content="http://ssfckl.cleffon.com/featured.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="620">
 <meta property="og:image:alt" content="Sahityotsav 2026 — Speed: Beyond the Binary of Time and Space">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Sahityotsav 2026 — Program Schedule">
-<meta name="twitter:description" content="Three days of literary and arts competitions by SSF Chakkarakkal Division. View the full schedule and check results — June 19–21, Muthukulty.">
+<meta name="twitter:title" content="Sahityotsav 2026 — Schedule, Results & Standings">
+<meta name="twitter:description" content="View the full schedule, check live results, and follow team standings. Three days of literary and arts competitions by SSF Chakkarakkal Division — June 19–21, Muthukulty.">
 <meta name="twitter:image" content="http://ssfckl.cleffon.com/featured.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -469,6 +469,30 @@ body {
   color: var(--purple-800);
   border: 1px solid rgba(19, 31, 67, 0.15);
 }
+.hero-cta-highlight {
+  background: linear-gradient(135deg, var(--coral-600), #C8383F);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(228, 79, 87, 0.4);
+  position: relative;
+  animation: ctaPulse 2.2s ease-in-out infinite;
+}
+.hero-cta-highlight::after {
+  content: 'LIVE';
+  font-size: 0.5rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  background: rgba(255,255,255,0.25);
+  padding: 2px 5px;
+  border-radius: 5px;
+  margin-left: 2px;
+}
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 4px 14px rgba(228, 79, 87, 0.4); }
+  50% { box-shadow: 0 4px 22px rgba(228, 79, 87, 0.65); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-cta-highlight { animation: none; }
+}
 .hero-carousel {
   padding: 0 1rem 1rem;
 }
@@ -704,13 +728,13 @@ body {
         <h1 class="hero-title">Celebrate the Art of <span>Literature & Expression</span></h1>
         <p class="hero-desc">Join us for Sahityotsav, a vibrant literary fest featuring competitions across all levels. Explore the schedule, check results, and be part of the celebration.</p>
         <div class="hero-ctas">
-          <a href="#schedule-section" class="hero-cta hero-cta-primary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            Schedule
-          </a>
-          <a href="results.html" class="hero-cta hero-cta-secondary">
+          <a href="results.html" class="hero-cta hero-cta-highlight">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             Check Results
+          </a>
+          <a href="#schedule-section" class="hero-cta hero-cta-secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Schedule
           </a>
         </div>
       </div>

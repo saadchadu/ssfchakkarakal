@@ -55,38 +55,40 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
-body { font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text-primary); height: 100dvh; overflow: hidden; display: flex; flex-direction: column; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+body { font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100dvh; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
 
 /* Sticky Logo Header (pinned top) */
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem 1rem;
-  padding-top: calc(0.5rem + env(safe-area-inset-top));
+  height: calc(56px + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) 1rem 0;
   background: rgba(255,255,255,0.95);
   -webkit-backdrop-filter: saturate(180%) blur(12px);
   backdrop-filter: saturate(180%) blur(12px);
   border-bottom: 1px solid var(--border);
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  position: relative;
-  z-index: 50;
 }
 .site-logo {
-  max-width: 280px;
+  max-width: 220px;
+  max-height: 40px;
   width: auto;
   height: auto;
   display: block;
+  object-fit: contain;
 }
 
 /* Hero Banner */
 .hero-banner {
   background: #131F43;
-  padding: 3rem 1.25rem 4.5rem;
+  padding: 1.75rem 1.25rem 3.5rem;
   position: relative;
   overflow: hidden;
-  flex-shrink: 0;
 }
 .hero-banner::before {
   content: '';
@@ -111,7 +113,7 @@ body { font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif; ba
 .hero-nav {
   display: flex;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
 }
 .hero-back {
   display: flex;
@@ -141,16 +143,20 @@ body { font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif; ba
   line-height: 1.5;
 }
 
-/* Filter Bar (overlaps hero) */
+/* Filter Bar (overlaps hero, sticks below header) */
 .filter-bar {
   width: 100%;
   max-width: 900px;
   margin: -2rem auto 0;
   padding: 0 1.25rem;
-  position: relative;
+  position: sticky;
+  top: calc(56px + env(safe-area-inset-top));
   z-index: 10;
-  flex-shrink: 0;
   min-width: 0;
+  transition: background 0.2s ease;
+}
+.filter-bar.stuck {
+  background: var(--bg);
 }
 .filter-bar-inner {
   background: var(--card-bg);
@@ -165,8 +171,7 @@ body { font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif; ba
 }
 .filter-bar-inner::-webkit-scrollbar { display: none; }
 .filter-bar.stuck .filter-bar-inner {
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow-md);
 }
 .filter-chip {
   padding: 9px 16px;
@@ -196,12 +201,7 @@ body { font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif; ba
   max-width: 900px;
   margin: 0 auto;
   padding: 1.5rem 1.25rem 2rem;
-  flex: 1;
-  min-height: 0;
   min-width: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
 }
 
 /* Stats Row */
@@ -534,6 +534,21 @@ function closeModal(e) {
   document.getElementById('modal-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
+
+// Toggle a solid background on the filter bar once it pins under the header
+(function() {
+  var header = document.querySelector('.site-header');
+  var filterBar = document.querySelector('.filter-bar');
+  if (!filterBar) return;
+  function onScroll() {
+    var headerH = header ? header.getBoundingClientRect().height : 0;
+    var stuck = filterBar.getBoundingClientRect().top <= headerH + 1;
+    filterBar.classList.toggle('stuck', stuck);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+})();
 </script>
 </body>
 </html>
