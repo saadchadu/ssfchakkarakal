@@ -369,6 +369,31 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
+.lb-download-wrap {
+  padding: 8px 14px 14px;
+}
+.lb-download-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: var(--purple-100);
+  color: var(--purple-600);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+.lb-download-btn:active {
+  transform: scale(0.97);
+  background: #D0CDE3;
+}
 
 /* Legend */
 .legend {
@@ -768,6 +793,12 @@ body {
       <span class="lb-published" id="lb-published">0 results published</span>
     </div>
     <div class="lb-list" id="lb-list"></div>
+    <div class="lb-download-wrap">
+      <button class="lb-download-btn" onclick="downloadScoreboard()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Scoreboard
+      </button>
+    </div>
   </section>
 
   <div id="schedule-section"></div>
@@ -1209,6 +1240,143 @@ function loadPublishedCount() {
 
 loadScores();
 loadPublishedCount();
+
+// Download scoreboard as image (1080x1350)
+function downloadScoreboard() {
+  var W = 1080, H = 1350;
+  var canvas = document.createElement('canvas');
+  canvas.width = W;
+  canvas.height = H;
+  var ctx = canvas.getContext('2d');
+
+  // Load template background
+  var bg = new Image();
+  bg.src = 'scoreboard-template.png';
+  bg.onload = function() { drawAll(ctx, W, H, bg); };
+  bg.onerror = function() { drawAll(ctx, W, H, null); };
+
+  function drawAll(ctx, W, H, bgImg) {
+    if (bgImg) {
+      ctx.drawImage(bgImg, 0, 0, W, H);
+    } else {
+      // Fallback dark gradient if template missing
+      var grad = ctx.createLinearGradient(0, 0, W, H);
+      grad.addColorStop(0, '#0C1430');
+      grad.addColorStop(1, '#1A2540');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    // TEAM STANDINGS title
+    ctx.fillStyle = '#1A1A2E';
+    ctx.font = '800 52px "Inter", "Manrope", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('TEAM STANDINGS', W / 2, 360);
+
+    // Results published count - format as "After N Results" with background pill
+    var publishedEl = document.getElementById('lb-published');
+    var publishedText = publishedEl ? publishedEl.textContent : '';
+    var resultCount = publishedText.match(/\d+/);
+    var afterText = resultCount ? 'After ' + resultCount[0] + ' Results' : '';
+    if (afterText) {
+      ctx.font = '600 22px "Inter", "Manrope", sans-serif';
+      var textWidth = ctx.measureText(afterText).width;
+      var pillW = textWidth + 36;
+      var pillH = 38;
+      var pillX = (W - pillW) / 2;
+      var pillY = 390;
+      // Pill background
+      ctx.fillStyle = 'rgba(83,74,183,0.08)';
+      ctx.beginPath();
+      ctx.roundRect(pillX, pillY, pillW, pillH, 10);
+      ctx.fill();
+      // Pill border
+      ctx.strokeStyle = 'rgba(83,74,183,0.15)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.roundRect(pillX, pillY, pillW, pillH, 10);
+      ctx.stroke();
+      // Text
+      ctx.fillStyle = '#534AB7';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(afterText, W / 2, pillY + pillH / 2);
+      ctx.textBaseline = 'alphabetic';
+    }
+
+    // Get sorted teams
+    var order = Object.keys(TEAM_SCORES);
+    var teams = order.map(function(name, idx) {
+      return { name: name, points: TEAM_SCORES[name], order: idx };
+    });
+    teams.sort(function(a, b) {
+      if (b.points !== a.points) return b.points - a.points;
+      return a.order - b.order;
+    });
+
+    // Score rows
+    var startY = 470;
+    var rowH = 105;
+    var rowGap = 16;
+    var padX = 60;
+    var cardW = W - padX * 2;
+    var radius = 16;
+
+    var rankBg = ['rgba(245,197,24,0.12)', 'rgba(148,163,184,0.12)', 'rgba(205,127,50,0.10)', '#F3F4F6', '#F3F4F6'];
+    var rankCircle = ['#F5C518', '#94A3B8', '#CD7F32', '#64748B', '#64748B'];
+    var rankTextColor = ['#5A4500', '#1E293B', '#5A3415', '#FFFFFF', '#FFFFFF'];
+    var nameColor = ['#1A1A2E', '#1A1A2E', '#1A1A2E', '#1A1A2E', '#1A1A2E'];
+    var ptsColor = ['#B8860B', '#475569', '#9A4E1C', '#6B7280', '#6B7280'];
+
+    teams.forEach(function(team, i) {
+      var y = startY + i * (rowH + rowGap);
+
+      ctx.fillStyle = rankBg[i] || 'rgba(255,255,255,0.06)';
+      ctx.beginPath();
+      ctx.roundRect(padX, y, cardW, rowH, radius);
+      ctx.fill();
+
+      ctx.strokeStyle = 'rgba(0,0,0,0.06)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.roundRect(padX, y, cardW, rowH, radius);
+      ctx.stroke();
+
+      var circX = padX + 60;
+      var circY = y + rowH / 2;
+      ctx.beginPath();
+      ctx.arc(circX, circY, 28, 0, Math.PI * 2);
+      ctx.fillStyle = rankCircle[i] || '#64748B';
+      ctx.fill();
+
+      ctx.fillStyle = rankTextColor[i] || '#FFFFFF';
+      ctx.font = '800 26px "Inter", "Manrope", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(String(i + 1), circX, circY);
+
+      ctx.fillStyle = nameColor[i] || '#1A1A2E';
+      ctx.font = '700 32px "Inter", "Manrope", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(team.name, padX + 115, circY);
+
+      ctx.fillStyle = ptsColor[i] || 'rgba(255,255,255,0.6)';
+      ctx.font = '800 36px "Inter", "Manrope", sans-serif';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(team.points + ' pts', padX + cardW - 35, circY);
+    });
+
+    ctx.textBaseline = 'alphabetic';
+
+    // Download
+    var link = document.createElement('a');
+    link.download = 'Sahityotsav-Team-Standings.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+}
 </script>
 </body>
 </html>
