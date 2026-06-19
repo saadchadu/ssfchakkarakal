@@ -6,305 +6,363 @@
 <title>Results - Sahityotsav</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+<link rel="dns-prefetch" href="https://api.github.com">
+<link rel="preload" as="image" href="result-hero.png">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --purple-600: #534AB7;
-  --purple-100: #EEEDFE;
-  --purple-800: #3C3489;
-  --green-100: #E1F5EE;
-  --green-800: #085041;
+  --purple-600: #131F43;
+  --purple-100: #E4E7F0;
+  --purple-800: #0C1430;
+  --coral-600: #E44F57;
+  --coral-100: #FDE7E8;
+  --green-500: #01A387;
+  --green-100: #DCF5EF;
+  --green-800: #00715E;
   --bg: #F8F7FC;
   --card-bg: #FFFFFF;
   --text-primary: #1A1A2E;
   --text-secondary: #6B7280;
   --border: #E5E7EB;
+  --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+  --radius-xl: 24px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--bg);
-  color: var(--text-primary);
-  min-height: 100dvh;
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+body { font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text-primary); height: 100dvh; overflow: hidden; display: flex; flex-direction: column; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+
+/* Sticky Logo Header (pinned top) */
+.site-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1rem;
+  padding-top: calc(0.5rem + env(safe-area-inset-top));
+  background: rgba(255,255,255,0.95);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  position: relative;
+  z-index: 50;
 }
-.page {
-  max-width: 480px;
-  margin: 0 auto;
-  padding: 1.25rem 1rem 2rem;
+.site-logo {
+  max-width: 280px;
+  width: auto;
+  height: auto;
+  display: block;
 }
 
-/* Back button */
-.back-btn {
-  display: inline-flex;
+/* Hero Banner */
+.hero-banner {
+  background: #131F43;
+  padding: 3rem 1.25rem 4.5rem;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: url('result-hero.png') center/cover no-repeat;
+  opacity: 1;
+}
+.hero-banner::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(19,31,67,0.88), transparent);
+}
+.hero-banner-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.hero-nav {
+  display: flex;
   align-items: center;
-  gap: 6px;
+  margin-bottom: 2rem;
+}
+.hero-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #fff;
   font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--text-secondary);
-  text-decoration: none;
-  padding: 8px 0;
-  margin-bottom: 1rem;
-  -webkit-tap-highlight-color: transparent;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(8px);
+  transition: background 0.15s;
 }
-.back-btn:active { color: var(--purple-600); }
-
-/* Page header */
-.page-header {
-  margin-bottom: 1.5rem;
+.hero-back:active { background: rgba(255,255,255,0.25); }
+.hero-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+  letter-spacing: -0.03em;
 }
-.page-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 6px;
-}
-.page-desc {
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
+.hero-subtitle {
+  font-size: 0.9375rem;
+  color: rgba(255,255,255,0.7);
   line-height: 1.5;
 }
 
-/* Dropdown */
-.select-wrapper {
-  position: relative;
-  margin-bottom: 1.25rem;
-}
-.select-wrapper select {
+/* Filter Bar (overlaps hero) */
+.filter-bar {
   width: 100%;
-  padding: 14px 44px 14px 16px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  font-family: inherit;
-  color: var(--text-primary);
+  max-width: 900px;
+  margin: -2rem auto 0;
+  padding: 0 1.25rem;
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
+  min-width: 0;
+}
+.filter-bar-inner {
   background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  appearance: none;
-  -webkit-appearance: none;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.filter-bar-inner::-webkit-scrollbar { display: none; }
+.filter-bar.stuck .filter-bar-inner {
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+.filter-chip {
+  padding: 9px 16px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  font-size: 0.75rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: border-color 0.2s;
-}
-.select-wrapper select:focus {
-  outline: none;
-  border-color: var(--purple-600);
-  box-shadow: 0 0 0 3px rgba(83, 74, 183, 0.1);
-}
-.select-arrow {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
+  background: var(--card-bg);
   color: var(--text-secondary);
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+.filter-chip.active {
+  background: var(--purple-600);
+  color: #fff;
+  border-color: var(--purple-600);
+  box-shadow: 0 4px 12px rgba(19,31,67,0.25);
+}
+.filter-chip:active:not(.active) { background: var(--purple-100); border-color: var(--purple-600); }
+
+/* Main Content */
+.main-content {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 2rem;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Program list */
-.program-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.program-item {
+/* Stats Row */
+.stats-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 16px;
+  margin-bottom: 1rem;
+  padding: 10px 2px;
+}
+.stats-text { font-size: 0.8125rem; color: var(--text-secondary); }
+.stats-text strong { color: var(--text-primary); font-weight: 700; }
+.stats-published { font-size: 0.75rem; font-weight: 600; color: var(--green-800); background: var(--green-100); padding: 4px 10px; border-radius: 12px; }
+
+/* Results Grid */
+.results-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.result-card {
   background: var(--card-bg);
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
   cursor: pointer;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
   -webkit-tap-highlight-color: transparent;
 }
-.program-item:active {
-  border-color: var(--purple-600);
-  box-shadow: var(--shadow-md);
-}
-.program-item-name {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-.program-item-arrow {
-  color: var(--text-secondary);
+.result-card:active { transform: scale(0.98); border-color: var(--purple-600); box-shadow: var(--shadow-md); }
+.result-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
-.program-placeholder {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: var(--text-secondary);
-  font-size: 0.8125rem;
-}
-.program-placeholder svg {
-  display: block;
-  margin: 0 auto 12px;
+.result-card-icon.published { background: var(--green-100); color: var(--green-800); }
+.result-card-icon.pending { background: #F3F4F6; color: #9CA3AF; }
+.result-card-body { flex: 1; min-width: 0; }
+.result-card-name { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+.result-card-status { font-size: 0.6875rem; font-weight: 500; }
+.result-card-status.published { color: var(--green-800); }
+.result-card-status.pending { color: var(--text-secondary); }
+.result-card-action { flex-shrink: 0; color: var(--text-secondary); }
+.result-card-download {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 12px; border-radius: 8px;
+  background: var(--purple-100); color: var(--purple-800);
+  font-size: 0.6875rem; font-weight: 600; text-decoration: none;
 }
 
-/* Modal overlay */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  z-index: 999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
-}
-.modal-overlay.open {
-  display: flex;
-}
-.modal {
+/* Placeholder */
+.results-placeholder {
+  text-align: center;
+  padding: 4rem 1.5rem;
   background: var(--card-bg);
   border-radius: var(--radius-lg);
-  width: 100%;
-  max-width: 360px;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  border: 1px solid var(--border);
+}
+.results-placeholder svg { display: block; margin: 0 auto 16px; opacity: 0.4; }
+.results-placeholder h3 { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+.results-placeholder p { font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999; display: none;
+  align-items: center; justify-content: center;
+  padding: 1.5rem;
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--card-bg); border-radius: var(--radius-lg);
+  width: 100%; max-width: 400px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
   animation: modalIn 0.25s ease;
 }
-@keyframes modalIn {
-  from { transform: scale(0.92); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-.modal-poster {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  display: block;
-  background: #F3F4F6;
-}
-.modal-body {
-  padding: 18px 20px 20px;
-}
-.modal-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-}
-.modal-category {
-  font-size: 0.6875rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 16px;
-}
+@keyframes modalIn { from { transform: scale(0.92) translateY(10px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+.modal-poster { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; background: #F3F4F6; }
+.modal-body { padding: 20px; }
+.modal-title { font-size: 1.0625rem; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; }
+.modal-category { font-size: 0.6875rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
 .modal-download {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  background: var(--purple-600);
-  color: #fff;
-  text-decoration: none;
-  font-size: 0.875rem;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 13px; border-radius: var(--radius-md);
+  background: var(--purple-600); color: #fff;
+  text-decoration: none; font-size: 0.875rem; font-weight: 600;
+  border: none; cursor: pointer;
 }
-.modal-download:active {
-  background: var(--purple-800);
-}
+.modal-download:active { background: var(--purple-800); }
 .modal-close {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  margin-top: 8px;
-  border-radius: 10px;
-  background: transparent;
-  color: var(--text-secondary);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
+  display: block; width: 100%; padding: 12px; margin-top: 8px;
+  border-radius: var(--radius-md); background: #F3F4F6;
+  color: var(--text-secondary); font-size: 0.8125rem; font-weight: 500;
+  border: none; cursor: pointer; font-family: inherit; text-align: center;
 }
-.modal-close:active {
-  background: #F3F4F6;
-}
+.modal-close:active { background: #E5E7EB; }
+.modal-not-published { text-align: center; padding: 2.5rem 1.5rem; }
+.modal-not-published svg { display: block; margin: 0 auto 14px; }
+.modal-not-published h3 { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+.modal-not-published p { font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.5; }
 
-/* Not published state */
-.modal-not-published {
-  text-align: center;
-  padding: 2.5rem 1.5rem;
-}
-.modal-not-published svg {
-  display: block;
-  margin: 0 auto 14px;
-}
-.modal-not-published h3 {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 6px;
-}
-.modal-not-published p {
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
+/* Responsive */
 @media (min-width: 768px) {
-  .page { max-width: 600px; padding: 2rem; }
+  .hero-banner { padding: 3.5rem 2rem 5.5rem; }
+  .hero-title { font-size: 2.75rem; }
+  .hero-subtitle { font-size: 1.0625rem; }
+  .filter-bar { padding: 0 2rem; margin-top: -2.5rem; }
+  .filter-bar-inner { padding: 18px 24px; gap: 10px; }
+  .main-content { padding: 2rem; }
+  .results-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
+@media (min-width: 1024px) {
+  .hero-title { font-size: 3rem; }
+  .results-grid { grid-template-columns: repeat(3, 1fr); }
 }
 </style>
 </head>
 <body>
-<div class="page">
-  <a href="index.html" class="back-btn">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-    Back to Schedule
+
+<!-- Sticky Logo Header (mobile) -->
+<header class="site-header">
+  <a href="index.html" aria-label="Sahityotsav home">
+    <img src="sahi-dark.png" alt="Sahityotsav" class="site-logo" width="400" height="120" fetchpriority="high" decoding="async">
   </a>
+</header>
 
-  <div class="page-header">
-    <h1 class="page-title">Results</h1>
-    <p class="page-desc">Select a category below to view results for each program. Download result posters when available.</p>
+<!-- Hero Banner -->
+<div class="hero-banner">
+  <div class="hero-banner-inner">
+    <nav class="hero-nav">
+      <a href="index.html" class="hero-back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Home
+      </a>
+    </nav>
+    <h1 class="hero-title">Competition Results</h1>
+    <p class="hero-subtitle">Discover results for all programs across every category. Download result posters when available.</p>
+  </div>
+</div>
+
+<!-- Filter Bar -->
+<div class="filter-bar">
+  <div class="filter-bar-inner">
+    <button class="filter-chip" onclick="selectCategory('LP', this)">LP</button>
+    <button class="filter-chip" onclick="selectCategory('UP', this)">UP</button>
+    <button class="filter-chip" onclick="selectCategory('HS', this)">HS</button>
+    <button class="filter-chip" onclick="selectCategory('HSS', this)">HSS</button>
+    <button class="filter-chip" onclick="selectCategory('Junior', this)">Junior</button>
+    <button class="filter-chip" onclick="selectCategory('Senior', this)">Senior</button>
+    <button class="filter-chip" onclick="selectCategory('General', this)">General</button>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <div id="stats-row" class="stats-row" style="display:none;">
+    <span class="stats-text"><strong id="stat-count">0</strong> programs in <strong id="stat-category"></strong></span>
+    <span class="stats-published" id="stat-published"></span>
   </div>
 
-  <div class="select-wrapper">
-    <select id="category-select" onchange="onCategoryChange(this.value)">
-      <option value="">Select Category</option>
-      <option value="LP">LP - Lower Primary</option>
-      <option value="UP">UP - Upper Primary</option>
-      <option value="HS">HS - High School</option>
-      <option value="HSS">HSS - Higher Secondary</option>
-      <option value="Junior">Junior</option>
-      <option value="Senior">Senior</option>
-      <option value="General">General</option>
-    </select>
-    <div class="select-arrow">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-  </div>
-
-  <div id="program-list" class="program-list">
-    <div class="program-placeholder">
-      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      Select a category to see programs
+  <div id="results-grid" class="results-grid">
+    <div class="results-placeholder">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <h3>Select a Category</h3>
+      <p>Choose a category from the filter above to view program results.</p>
     </div>
   </div>
 </div>
 
-<!-- Result Modal -->
+<!-- Modal -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-  <div class="modal" id="result-modal" onclick="event.stopPropagation()">
-  </div>
+  <div class="modal" id="result-modal" onclick="event.stopPropagation()"></div>
 </div>
 
 <script>
@@ -315,7 +373,7 @@ var categoryItems = {
   HSS: ['Urdu Kavitha Parayanam', 'Bhakthiganam', 'Quiz', 'Katha Rachana', 'Kavitha Rachana', 'Essay Malayalam', 'Essay English', 'Pencil Drawing', 'Water Colour', 'News Writing', 'Arabic Calligraphy', 'Digital Painting', 'Mappilappattu', 'Prasangam Malayalam', 'Book Test'],
   Junior: ['Arabi Prasangam', 'Quiz', 'Social Text', 'Calligraphy', 'Kavitha Rachana', 'Katha Rachana', 'Essay Malayalam', 'Essay Arabi', 'Mudravakya Rachana', 'Madhgana Rachana', 'Translation Arabi', 'AI Kavitha Rachana', 'Prasangam Malayalam', 'Prasangam English', 'Mappilappattu', 'Book Test'],
   Senior: ['Mappilappattu', 'Quiz', 'Social Text', 'E Poster', 'Poster Designing', 'Katha Rachana', 'Kavitha Rachana', 'Kavitha Rachana English', 'Essay Malayalam', 'Essay English', 'Essay Urdu', 'Translation English', 'Madhgana Rachana', 'Mudravakya Rachana', 'Feature Writing', 'Digital Painting', 'Digital Illustration', 'Prasangam Malayalam', 'Prasangam English', 'Hamd Urdu', "Musha'ra Alfiya", 'Kavitha Parayanam English', 'Book Test'],
-  General: ['Viplava Ganam', 'Qawali', 'Mappilappattu', 'Risala Quiz', 'Qaseeda', 'Nasheeda', 'Group Song', 'Moulid Parayanam', 'Collage']
+  General: ['Viplava Ganam', 'Qawali', 'Malappattu', 'Risala Quiz', 'Qaseeda', 'Nasheeda', 'Group Song', 'Moulid Parayanam', 'Collage']
 };
 
 var REPO = 'saadchadu/ssfchakkarakal';
@@ -323,20 +381,13 @@ var FOLDER = 'results';
 var API_BASE = 'https://api.github.com/repos/' + REPO + '/contents/' + FOLDER + '/';
 var RAW_BASE = 'https://raw.githubusercontent.com/' + REPO + '/master/' + FOLDER + '/';
 var cache = {};
-var currentCategory = '';
 
-function toKey(str) {
-  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
-}
+function toKey(str) { return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, ''); }
 
 function fetchResults(category, callback) {
   if (cache[category]) { callback(cache[category]); return; }
-
   fetch(API_BASE + encodeURIComponent(category))
-    .then(function(res) {
-      if (!res.ok) throw new Error('empty');
-      return res.json();
-    })
+    .then(function(res) { if (!res.ok) throw new Error('empty'); return res.json(); })
     .then(function(files) {
       var results = {};
       files.forEach(function(f) {
@@ -347,36 +398,57 @@ function fetchResults(category, callback) {
       cache[category] = results;
       callback(results);
     })
-    .catch(function() {
-      cache[category] = {};
-      callback({});
-    });
+    .catch(function() { cache[category] = {}; callback({}); });
 }
 
-function onCategoryChange(category) {
-  currentCategory = category;
-  var list = document.getElementById('program-list');
+function selectCategory(category, btn) {
+  document.querySelectorAll('.filter-chip').forEach(function(c) { c.classList.remove('active'); });
+  btn.classList.add('active');
 
-  if (!category) {
-    list.innerHTML = '<div class="program-placeholder"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Select a category to see programs</div>';
-    return;
-  }
-
+  var grid = document.getElementById('results-grid');
   var items = categoryItems[category] || [];
-  var html = '';
-  items.forEach(function(item) {
-    html += '<div class="program-item" onclick="openResult(\'' + category + '\', \'' + item.replace(/'/g, "\\'") + '\')">';
-    html += '<span class="program-item-name">' + item + '</span>';
-    html += '<span class="program-item-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>';
-    html += '</div>';
+  grid.innerHTML = '<div class="results-placeholder"><p>Loading...</p></div>';
+  document.getElementById('stats-row').style.display = 'none';
+
+  fetchResults(category, function(results) {
+    var publishedCount = 0;
+    var html = '';
+
+    items.forEach(function(item) {
+      var fileKey = toKey(item);
+      var isPublished = !!results[fileKey];
+      if (isPublished) publishedCount++;
+
+      html += '<div class="result-card" onclick="openResult(\'' + category + '\', \'' + item.replace(/'/g, "\\'") + '\')">';
+      html += '<div class="result-card-icon ' + (isPublished ? 'published' : 'pending') + '">';
+      if (isPublished) {
+        html += '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+      } else {
+        html += '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+      }
+      html += '</div>';
+      html += '<div class="result-card-body">';
+      html += '<div class="result-card-name">' + item + '</div>';
+      html += '<div class="result-card-status ' + (isPublished ? 'published' : 'pending') + '">' + (isPublished ? 'Result available' : 'Not published yet') + '</div>';
+      html += '</div>';
+      html += '<div class="result-card-action">';
+      html += '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
+      html += '</div>';
+      html += '</div>';
+    });
+
+    grid.innerHTML = html;
+
+    document.getElementById('stat-count').textContent = items.length;
+    document.getElementById('stat-category').textContent = category;
+    document.getElementById('stat-published').textContent = publishedCount + ' published';
+    document.getElementById('stats-row').style.display = 'flex';
   });
-  list.innerHTML = html;
 }
 
 function openResult(category, item) {
   var modal = document.getElementById('result-modal');
   var overlay = document.getElementById('modal-overlay');
-
   modal.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-secondary);font-size:0.8125rem;">Loading...</div>';
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -384,18 +456,17 @@ function openResult(category, item) {
   fetchResults(category, function(results) {
     var fileKey = toKey(item);
     var fileName = results[fileKey];
-
     if (fileName) {
       var rawUrl = RAW_BASE + encodeURIComponent(category) + '/' + encodeURIComponent(fileName);
       modal.innerHTML =
-        '<img class="modal-poster" src="' + rawUrl + '" alt="' + item + ' Result">' +
+        '<img class="modal-poster" src="' + rawUrl + '" alt="' + item + '" decoding="async">' +
         '<div class="modal-body">' +
           '<div class="modal-title">' + item + '</div>' +
           '<div class="modal-category">' + category + '</div>' +
-          '<a href="' + rawUrl + '" download="' + fileName + '" class="modal-download">' +
+          '<button type="button" class="modal-download" onclick="downloadPoster(this, \'' + rawUrl + '\', \'' + fileName.replace(/'/g, "\\'") + '\')">' +
             '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
-            'Download Poster' +
-          '</a>' +
+            '<span>Download Poster</span>' +
+          '</button>' +
           '<button class="modal-close" onclick="closeModal()">Close</button>' +
         '</div>';
     } else {
@@ -403,11 +474,39 @@ function openResult(category, item) {
         '<div class="modal-not-published">' +
           '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
           '<h3>' + item + '</h3>' +
-          '<p>Result for this program has not been published yet. Please check back later.</p>' +
+          '<p>Result not published yet. Check back later.</p>' +
         '</div>' +
-        '<div style="padding:0 20px 20px;"><button class="modal-close" onclick="closeModal()" style="background:#F3F4F6;">Close</button></div>';
+        '<div style="padding:0 20px 20px;"><button class="modal-close" onclick="closeModal()">Close</button></div>';
     }
   });
+}
+
+function downloadPoster(btn, url, fileName) {
+  var label = btn.querySelector('span');
+  var original = label ? label.textContent : '';
+  if (label) label.textContent = 'Downloading...';
+  btn.style.pointerEvents = 'none';
+
+  fetch(url)
+    .then(function(res) { if (!res.ok) throw new Error('fetch failed'); return res.blob(); })
+    .then(function(blob) {
+      var blobUrl = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function() { URL.revokeObjectURL(blobUrl); }, 1000);
+      if (label) label.textContent = original;
+      btn.style.pointerEvents = '';
+    })
+    .catch(function() {
+      // Fallback: open in a new tab if blob download is blocked
+      window.open(url, '_blank');
+      if (label) label.textContent = original;
+      btn.style.pointerEvents = '';
+    });
 }
 
 function closeModal(e) {
