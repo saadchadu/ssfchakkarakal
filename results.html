@@ -434,7 +434,16 @@ function selectCategory(category, btn) {
     var publishedCount = 0;
     var html = '';
 
-    items.forEach(function(item) {
+    // Sort: published items first, then unpublished
+    var sortedItems = items.slice().sort(function(a, b) {
+      var aPublished = !!results[toKey(a)];
+      var bPublished = !!results[toKey(b)];
+      if (aPublished && !bPublished) return -1;
+      if (!aPublished && bPublished) return 1;
+      return 0;
+    });
+
+    sortedItems.forEach(function(item) {
       var fileKey = toKey(item);
       var isPublished = !!results[fileKey];
       if (isPublished) publishedCount++;
