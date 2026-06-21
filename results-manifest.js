@@ -3,9 +3,9 @@
 window.RESULTS_MANIFEST = {
   "LP": [],
   "UP": [],
-  "HS": ["Caption Writing.png", "katha rachana.png", "kavitha rachana.png"],
-  "HSS": ["Essay English.png", "katha rachana.png"],
-  "Junior": ["Katha Rachana.png", "Kavitha Rachana.png"],
-  "Senior": ["Katha Rachana.png", "Kavitha Rachana.png", "feature writing.png"],
+  "HS": ["caption-writing.png", "katha-rachana.png", "kavitha-rachana.png"],
+  "HSS": ["essay-english.png", "katha-achana.png"],
+  "Junior": ["katha-achana.png", "kavitha-rachana.png"],
+  "Senior": ["feature-writing.png", "katha-rachana.png", "kavitha-achana.png"],
   "General": []
 };
