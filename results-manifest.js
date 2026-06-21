@@ -3,7 +3,7 @@
 // Just drop poster.jpg into the correct folder and update this list.
 window.RESULTS_MANIFEST = {
   "LP": ["katha-kathanam", "quiz", "pencil-drawing", "madh-ganam", "jalachayam", "hand-writing-girls", "vayana-mal", "vayana-arabi-mal", "prasangam-malayalam", "bhasha-keli", "pencil-drawing-girls", "book-test", "jalachayam-girls"],
-  "UP": ["pencil-drawing", "quiz", "spelling-bee", "ghanithakeli", "jalachayam", "katharachana", "katha-kathanam", "mappilappattu", "katharachana-girls", "jalachayam-girls", "prasangam-malayalam", "book-test", "origami-girls"],
+  "UP": ["pencil-drawing", "quiz", "spelling-bee", "ghanithakeli", "jalachayam", "katharachana", "katha-kathanam", "mappilappattu", "katharachana-girls", "jalachayam-girls", "prasangam-malayalam", "book-test", "origami-girls", "sudoku"],
   "HS": ["caption-writing", "katha-rachana", "kavitha-rachana", "language-game", "essay-malayalam", "news-reading", "quiz", "pencil-drawing", "water-colour", "kavitha-parayanam-malayalam", "mappilappattu", "pencil-drawing-girls", "water-colour-girls", "katha-rachana-girls", "urdu-kavitha-parayanam", "prasangam-english", "book-test", "prasangam-malayalam"],
   "HSS": ["essay-english", "katha-rachana", "pencil-drawing", "arabic-calligraphy", "water-colour", "urdu-kavitha-parayanam", "digital-painting", "bhakthiganam", "arabic-calligraphy-girls", "embroidery-girls", "mappilappattu", "kavitha-rachana-girls", "prasangam-malayalam", "book-test"],
   "Junior": ["katha-rachana", "kavitha-rachana", "calligraphy", "essay-arabi", "social-text", "essay-malayalam", "translation-arabi", "madhgana-rachana", "mappilappattu", "prasangam-english", "socio-synapse", "quiz", "prasangam-malayalam"],
