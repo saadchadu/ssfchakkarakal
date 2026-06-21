@@ -26,8 +26,6 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
-<link rel="dns-prefetch" href="https://api.github.com">
 <link rel="preload" as="image" href="result-hero.png">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&display=swap" rel="stylesheet">
 <style>
@@ -397,9 +395,6 @@ var categoryItems = {
   General: ['Viplava Ganam', 'Qawali', 'Malappattu', 'Risala Quiz', 'Qaseeda', 'Nasheeda', 'Group Song', 'Moulid Parayanam', 'Collage']
 };
 
-var REPO = 'saadchadu/ssfchakkarakal';
-var FOLDER = 'results';
-var API_BASE = 'https://api.github.com/repos/' + REPO + '/contents/' + FOLDER + '/';
 var RAW_BASE = 'results/';
 var cache = {};
 
@@ -408,33 +403,19 @@ function toKey(str) { return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').repla
 function fetchResults(category, callback) {
   if (cache[category]) { callback(cache[category]); return; }
 
-  // Use local manifest (no API calls needed)
+  // Use local manifest — each entry is a folder name containing poster.jpg
   if (window.RESULTS_MANIFEST && window.RESULTS_MANIFEST[category]) {
     var results = {};
-    window.RESULTS_MANIFEST[category].forEach(function(f) {
-      if (/\.(png|jpg|jpeg|webp)$/i.test(f)) {
-        results[toKey(f.replace(/\.(png|jpg|jpeg|webp)$/i, ''))] = f;
-      }
+    window.RESULTS_MANIFEST[category].forEach(function(folder) {
+      results[folder] = folder; // key = folder name
     });
     cache[category] = results;
     callback(results);
     return;
   }
 
-  // Fallback to GitHub API
-  fetch(API_BASE + encodeURIComponent(category))
-    .then(function(res) { if (!res.ok) throw new Error('empty'); return res.json(); })
-    .then(function(files) {
-      var results = {};
-      files.forEach(function(f) {
-        if (/\.(png|jpg|jpeg|webp)$/i.test(f.name)) {
-          results[toKey(f.name.replace(/\.(png|jpg|jpeg|webp)$/i, ''))] = f.name;
-        }
-      });
-      cache[category] = results;
-      callback(results);
-    })
-    .catch(function() { cache[category] = {}; callback({}); });
+  cache[category] = {};
+  callback({});
 }
 
 function selectCategory(category, btn) {
@@ -500,30 +481,55 @@ function openResult(category, item) {
 
   fetchResults(category, function(results) {
     var fileKey = toKey(item);
-    var fileName = results[fileKey];
-    if (fileName) {
-      var rawUrl = RAW_BASE + category + '/' + fileName;
-      modal.innerHTML =
-        '<img class="modal-poster" src="' + rawUrl + '" alt="' + item + '" decoding="async">' +
-        '<div class="modal-body">' +
-          '<div class="modal-title">' + item + '</div>' +
-          '<div class="modal-category">' + category + '</div>' +
-          '<button type="button" class="modal-download" onclick="downloadPoster(this, \'' + rawUrl + '\', \'' + fileName.replace(/'/g, "\\'") + '\')">' +
-            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
-            '<span>Download Poster</span>' +
-          '</button>' +
-          '<button class="modal-close" onclick="closeModal()">Close</button>' +
-        '</div>';
+    var folder = results[fileKey];
+    if (folder) {
+      // Try to load poster.jpg from the folder
+      var basePath = RAW_BASE + category + '/' + folder + '/poster';
+      var img = new Image();
+      var attempts = ['jpg', 'jpeg', 'png', 'webp'];
+      var idx = 0;
+
+      function tryNext() {
+        if (idx >= attempts.length) {
+          // None worked — show not published
+          showNotPublished(modal, item);
+          return;
+        }
+        var ext = attempts[idx++];
+        var url = basePath + '.' + ext;
+        img.onload = function() { showPoster(modal, url, item, category, 'poster.' + ext); };
+        img.onerror = tryNext;
+        img.src = url;
+      }
+      tryNext();
     } else {
-      modal.innerHTML =
-        '<div class="modal-not-published">' +
-          '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
-          '<h3>' + item + '</h3>' +
-          '<p>Result not published yet. Check back later.</p>' +
-        '</div>' +
-        '<div style="padding:0 20px 20px;"><button class="modal-close" onclick="closeModal()">Close</button></div>';
+      showNotPublished(modal, item);
     }
   });
+}
+
+function showPoster(modal, rawUrl, item, category, fileName) {
+  modal.innerHTML =
+    '<img class="modal-poster" src="' + rawUrl + '" alt="' + item + '" decoding="async">' +
+    '<div class="modal-body">' +
+      '<div class="modal-title">' + item + '</div>' +
+      '<div class="modal-category">' + category + '</div>' +
+      '<button type="button" class="modal-download" onclick="downloadPoster(this, \'' + rawUrl + '\', \'' + fileName.replace(/'/g, "\\'") + '\')">' +
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
+        '<span>Download Poster</span>' +
+      '</button>' +
+      '<button class="modal-close" onclick="closeModal()">Close</button>' +
+    '</div>';
+}
+
+function showNotPublished(modal, item) {
+  modal.innerHTML =
+    '<div class="modal-not-published">' +
+      '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' +
+      '<h3>' + item + '</h3>' +
+      '<p>Result not published yet. Check back later.</p>' +
+    '</div>' +
+    '<div style="padding:0 20px 20px;"><button class="modal-close" onclick="closeModal()">Close</button></div>';
 }
 
 function downloadPoster(btn, url, fileName) {
