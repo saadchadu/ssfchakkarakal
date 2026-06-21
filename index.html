@@ -550,12 +550,12 @@ body {
   padding: 4px;
 }
 .hero-carousel .carousel-slide img {
-  height: 400px;
-  max-height: 50vh;
+  height: auto;
+  max-height: 400px;
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: var(--radius-lg);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
 @media (min-width: 768px) {
@@ -584,8 +584,7 @@ body {
     width: 100%;
   }
   .hero-carousel .carousel-slide img {
-    max-height: 280px;
-    aspect-ratio: 3/4;
+    max-height: 300px;
     border-radius: var(--radius-md);
   }
 }
@@ -787,10 +786,12 @@ body {
       <div class="hero-carousel">
         <div class="carousel-wrapper">
           <div class="carousel-track" id="carousel-track">
-            <div class="carousel-slide"><img src="event-posters/inauguration.jpeg" alt="Inauguration" decoding="async" fetchpriority="high"></div>
-            <div class="carousel-slide"><img src="event-posters/theme-talk.jpeg" alt="Theme Talk" loading="lazy" decoding="async"></div>
-            <div class="carousel-slide"><img src="event-posters/Time.png" alt="Time" loading="lazy" decoding="async"></div>
-            <div class="carousel-slide"><img src="event-posters/Time 5.png" alt="Time 5" loading="lazy" decoding="async"></div>
+            <div class="carousel-slide"><img src="event-posters/inauguration.jpeg" alt="Inauguration"></div>
+            <div class="carousel-slide"><img src="event-posters/theme-talk.jpeg" alt="Theme Talk"></div>
+            <div class="carousel-slide"><img src="event-posters/Time.png" alt="Time"></div>
+            <div class="carousel-slide"><img src="event-posters/Time 5.png" alt="Time 5"></div>
+            <div class="carousel-slide"><img src="event-posters/Qawwali.jpg" alt="Qawwali"></div>
+            <div class="carousel-slide"><img src="event-posters/2026 collection 101.jpg" alt="Collection"></div>
           </div>
           <div class="carousel-dots" id="carousel-dots"></div>
         </div>
