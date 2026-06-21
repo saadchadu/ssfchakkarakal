@@ -17,9 +17,9 @@ window.SAHITYOTSAV_SCORES_AFTER = {
 
 // Final points (fill in when competition ends)
 window.SAHITYOTSAV_SCORES_FINAL = {
-  "Kadachira": 658,
-  "Chakkarakkal": 516,
-  "Peralasseri": 266,
+  "Kadachira": 661,
+  "Chakkarakkal": 521,
+  "Peralasseri": 258,
   "Chembilode": 656,
   "Kanhirode": 58
 };

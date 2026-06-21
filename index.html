@@ -772,8 +772,16 @@ body {
   function onReady() {
     loaded++;
     if (loaded >= 2) {
-      if (typeof loadScores === 'function') loadScores();
-      if (typeof loadPublishedCount === 'function') loadPublishedCount();
+      // Wait for DOM and inline scripts to be ready
+      function init() {
+        if (typeof loadScores === 'function') loadScores();
+        if (typeof loadPublishedCount === 'function') loadPublishedCount();
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
     }
   }
   loadScript('scores.js', onReady);
