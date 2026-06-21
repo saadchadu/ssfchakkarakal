@@ -263,18 +263,18 @@ body {
 .updates-track {
   display: flex;
   gap: 10px;
+  align-items: center;
   animation: scrollUpdates 20s linear infinite;
 }
 .updates-track:hover { animation-play-state: paused; }
 .updates-item { flex-shrink: 0; width: calc(33.333% - 7px); border-radius: var(--radius-md); overflow: hidden; }
-.updates-item img { width: 100%; height: 180px; object-fit: cover; display: block; border-radius: var(--radius-md); }
+.updates-item img { width: 100%; height: auto; object-fit: cover; display: block; border-radius: var(--radius-md); }
 @keyframes scrollUpdates {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 @media (max-width: 767px) {
   .updates-item { width: calc(50% - 5px); }
-  .updates-item img { height: 140px; }
 }
 
 /* Team Leaderboard */
