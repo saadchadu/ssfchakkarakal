@@ -759,6 +759,7 @@ body {
 }
 </style>
 <script src="scores.js"></script>
+<script src="results-manifest.js"></script>
 </head>
 <body>
 <div class="page">
@@ -1249,6 +1250,18 @@ function loadPublishedCount() {
   var el = document.getElementById('lb-published');
   if (!el) return;
 
+  // Use manifest if available (no API needed)
+  if (window.RESULTS_MANIFEST) {
+    var total = 0;
+    var categories = ['LP', 'UP', 'HS', 'HSS', 'Junior', 'Senior', 'General'];
+    categories.forEach(function(cat) {
+      if (window.RESULTS_MANIFEST[cat]) total += window.RESULTS_MANIFEST[cat].length;
+    });
+    el.textContent = total + (total === 1 ? ' result published' : ' results published');
+    return;
+  }
+
+  // Fallback to GitHub API
   var REPO = 'saadchadu/ssfchakkarakal';
   var API_BASE = 'https://api.github.com/repos/' + REPO + '/contents/results/';
   var categories = ['LP', 'UP', 'HS', 'HSS', 'Junior', 'Senior', 'General'];

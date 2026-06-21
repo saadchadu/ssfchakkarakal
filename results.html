@@ -327,6 +327,7 @@ body { font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif; ba
   .results-grid { grid-template-columns: repeat(3, 1fr); }
 }
 </style>
+<script src="results-manifest.js"></script>
 </head>
 <body>
 
@@ -406,6 +407,21 @@ function toKey(str) { return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').repla
 
 function fetchResults(category, callback) {
   if (cache[category]) { callback(cache[category]); return; }
+
+  // Use local manifest (no API calls needed)
+  if (window.RESULTS_MANIFEST && window.RESULTS_MANIFEST[category]) {
+    var results = {};
+    window.RESULTS_MANIFEST[category].forEach(function(f) {
+      if (/\.(png|jpg|jpeg|webp)$/i.test(f)) {
+        results[toKey(f.replace(/\.(png|jpg|jpeg|webp)$/i, ''))] = f;
+      }
+    });
+    cache[category] = results;
+    callback(results);
+    return;
+  }
+
+  // Fallback to GitHub API
   fetch(API_BASE + encodeURIComponent(category))
     .then(function(res) { if (!res.ok) throw new Error('empty'); return res.json(); })
     .then(function(files) {
