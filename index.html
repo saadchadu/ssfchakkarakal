@@ -802,18 +802,7 @@ body {
   <section class="updates-section">
     <div class="updates-label">Recent Updates</div>
     <div class="updates-track-wrapper">
-      <div class="updates-track" id="updates-track">
-        <div class="updates-item"><img src="updates/image 1.jpeg" alt="Update" loading="lazy"></div>
-        <div class="updates-item"><img src="updates/image 2.jpeg" alt="Update" loading="lazy"></div>
-        <div class="updates-item"><img src="updates/image 3.jpeg" alt="Update" loading="lazy"></div>
-        <div class="updates-item"><img src="updates/image 4.jpeg" alt="Update" loading="lazy"></div>
-        <div class="updates-item"><img src="updates/image 5.jpeg" alt="Update" loading="lazy"></div>
-        <div class="updates-item"><img src="updates/image 1.jpeg" alt="Update" loading="lazy"></div>
-        <div class="updates-item"><img src="updates/image 2.jpeg" alt="Update" loading="lazy"></div>
-        <div class="updates-item"><img src="updates/image 3.jpeg" alt="Update" loading="lazy"></div>
-        <div class="updates-item"><img src="updates/image 4.jpeg" alt="Update" loading="lazy"></div>
-        <div class="updates-item"><img src="updates/image 5.jpeg" alt="Update" loading="lazy"></div>
-      </div>
+      <div class="updates-track" id="updates-track"></div>
     </div>
   </section>
 
@@ -1279,6 +1268,29 @@ function loadPublishedCount() {
 
 loadScores();
 loadPublishedCount();
+
+// Shuffle updates images
+(function() {
+  var images = ['updates/image 1.jpeg','updates/image 2.jpeg','updates/image 3.jpeg','updates/image 4.jpeg','updates/image 5.jpeg'];
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+  var shuffled = shuffle(images.slice());
+  var track = document.getElementById('updates-track');
+  if (track) {
+    var html = '';
+    // Double for seamless loop
+    var all = shuffled.concat(shuffled);
+    all.forEach(function(src) {
+      html += '<div class="updates-item"><img src="' + src + '" alt="Update"></div>';
+    });
+    track.innerHTML = html;
+  }
+})();
 
 // Download scoreboard as image (1080x1350)
 function downloadScoreboard() {
