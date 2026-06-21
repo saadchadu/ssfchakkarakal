@@ -3,9 +3,9 @@
 //  The leaderboard re-sorts automatically.
 // ============================================
 window.SAHITYOTSAV_SCORES = {
-  "Kadachira": 90,
-  "Chakkarakkal": 68,
-  "Peralasseri": 50,
-  "Chembilode": 112,
-  "Kanhirode": 14
+  "Kadachira": 196,
+  "Chakkarakkal": 129,
+  "Peralasseri": 94,
+  "Chembilode": 225,
+  "Kanhirode": 23
 };
