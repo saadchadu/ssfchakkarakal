@@ -288,7 +288,7 @@ body { font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif; ba
   animation: modalIn 0.25s ease;
 }
 @keyframes modalIn { from { transform: scale(0.92) translateY(10px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
-.modal-poster { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; background: #F3F4F6; }
+.modal-poster { width: 100%; max-height: 70vh; object-fit: contain; display: block; background: #F3F4F6; }
 .modal-body { padding: 20px; }
 .modal-title { font-size: 1.0625rem; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; }
 .modal-category { font-size: 0.6875rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
