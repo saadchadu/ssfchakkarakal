@@ -502,7 +502,7 @@ function openResult(category, item) {
     var fileKey = toKey(item);
     var fileName = results[fileKey];
     if (fileName) {
-      var rawUrl = RAW_BASE + encodeURIComponent(category) + '/' + encodeURIComponent(fileName);
+      var rawUrl = RAW_BASE + category + '/' + fileName;
       modal.innerHTML =
         '<img class="modal-poster" src="' + rawUrl + '" alt="' + item + '" decoding="async">' +
         '<div class="modal-body">' +
