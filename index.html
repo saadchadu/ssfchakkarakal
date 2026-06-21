@@ -256,6 +256,27 @@ body {
   box-shadow: 0 2px 8px rgba(228, 79, 87, 0.3);
 }
 
+/* Updates Slider */
+.updates-section { margin-bottom: 1.5rem; overflow: hidden; }
+.updates-label { font-size: 0.6875rem; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+.updates-track-wrapper { overflow: hidden; position: relative; }
+.updates-track {
+  display: flex;
+  gap: 10px;
+  animation: scrollUpdates 20s linear infinite;
+}
+.updates-track:hover { animation-play-state: paused; }
+.updates-item { flex-shrink: 0; width: calc(33.333% - 7px); border-radius: var(--radius-md); overflow: hidden; }
+.updates-item img { width: 100%; height: 180px; object-fit: cover; display: block; border-radius: var(--radius-md); }
+@keyframes scrollUpdates {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@media (max-width: 767px) {
+  .updates-item { width: calc(50% - 5px); }
+  .updates-item img { height: 140px; }
+}
+
 /* Team Leaderboard */
 .leaderboard {
   margin-bottom: 1.5rem;
@@ -774,6 +795,25 @@ body {
           </div>
           <div class="carousel-dots" id="carousel-dots"></div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Updates -->
+  <section class="updates-section">
+    <div class="updates-label">Recent Updates</div>
+    <div class="updates-track-wrapper">
+      <div class="updates-track" id="updates-track">
+        <div class="updates-item"><img src="updates/image 1.jpeg" alt="Update" loading="lazy"></div>
+        <div class="updates-item"><img src="updates/image 2.jpeg" alt="Update" loading="lazy"></div>
+        <div class="updates-item"><img src="updates/image 3.jpeg" alt="Update" loading="lazy"></div>
+        <div class="updates-item"><img src="updates/image 4.jpeg" alt="Update" loading="lazy"></div>
+        <div class="updates-item"><img src="updates/image 5.jpeg" alt="Update" loading="lazy"></div>
+        <div class="updates-item"><img src="updates/image 1.jpeg" alt="Update" loading="lazy"></div>
+        <div class="updates-item"><img src="updates/image 2.jpeg" alt="Update" loading="lazy"></div>
+        <div class="updates-item"><img src="updates/image 3.jpeg" alt="Update" loading="lazy"></div>
+        <div class="updates-item"><img src="updates/image 4.jpeg" alt="Update" loading="lazy"></div>
+        <div class="updates-item"><img src="updates/image 5.jpeg" alt="Update" loading="lazy"></div>
       </div>
     </div>
   </section>
