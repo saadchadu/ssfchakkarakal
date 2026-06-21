@@ -325,7 +325,14 @@ body { font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif; ba
   .results-grid { grid-template-columns: repeat(3, 1fr); }
 }
 </style>
-<script src="results-manifest.js?v=2"></script>
+<script>
+// Dynamic cache-busting loader for manifest
+(function() {
+  var s = document.createElement('script');
+  s.src = 'results-manifest.js?t=' + Date.now();
+  document.head.appendChild(s);
+})();
+</script>
 </head>
 <body>
 

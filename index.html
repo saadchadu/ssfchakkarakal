@@ -758,8 +758,28 @@ body {
   }
 }
 </style>
-<script src="scores.js"></script>
-<script src="results-manifest.js?v=2"></script>
+<script>
+// Dynamic cache-busting loader for scores and manifest
+(function() {
+  var t = Date.now();
+  function loadScript(src, cb) {
+    var s = document.createElement('script');
+    s.src = src + '?t=' + t;
+    s.onload = cb || function(){};
+    document.head.appendChild(s);
+  }
+  var loaded = 0;
+  function onReady() {
+    loaded++;
+    if (loaded >= 2) {
+      if (typeof loadScores === 'function') loadScores();
+      if (typeof loadPublishedCount === 'function') loadPublishedCount();
+    }
+  }
+  loadScript('scores.js', onReady);
+  loadScript('results-manifest.js', onReady);
+})();
+</script>
 </head>
 <body>
 <div class="page">
@@ -1280,8 +1300,8 @@ function loadPublishedCount() {
   });
 }
 
-loadScores();
-loadPublishedCount();
+// Scores and manifest are loaded dynamically with cache-busting.
+// loadScores() and loadPublishedCount() are called after scripts load.
 
 // Shuffle updates images
 (function() {
